@@ -1,0 +1,343 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 160 73% 42%; /* #10b981 - Green from static site */
+    --primary-foreground: 210 40% 98%;
+    --primary-dark: 160 73% 30%; /* #059669 - Darker green */
+
+    --secondary: 217 91% 60%; /* #3b82f6 - Blue from static site */
+    --secondary-foreground: 210 40% 98%;
+
+    --accent: 37 90% 63%; /* #f59e0b - Orange from static site */
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 160 73% 42%; /* #10b981 - Green from static site */
+    --radius: 0.5rem;
+  }
+ 
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 160 73% 42%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary-dark: 160 73% 30%;
+
+    --secondary: 217 91% 60%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 37 90% 63%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 160 73% 42%;
+  }
+  
+  /* Base styles */
+  body {
+    @apply antialiased;
+  }
+  
+  /* Font assignments */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-poppins), Arial, sans-serif;
+    @apply font-bold leading-tight;
+  }
+  
+  body, p, div, span, li, td, th {
+    font-family: var(--font-inter), Roboto, sans-serif;
+    @apply leading-relaxed;
+  }
+  
+  nav, .nav-link, .navigation {
+    font-family: var(--font-montserrat), Helvetica, sans-serif;
+    @apply font-medium;
+  }
+  
+  button, .btn, .btn-primary, .btn-outline {
+    font-family: var(--font-raleway), Arial, sans-serif;
+    @apply font-semibold;
+  }
+  
+  footer, .footer, small, .copyright, .footer-link {
+    font-family: var(--font-roboto), Verdana, sans-serif;
+    @apply font-normal;
+  }
+  
+  blockquote, .quote, .testimonial, .highlight-text {
+    font-family: var(--font-merriweather), Georgia, serif;
+    @apply font-normal italic;
+  }
+  
+  .stat-number, .metrics, .dashboard-numbers, .number-display {
+    font-family: var(--font-source-sans-3), Arial, sans-serif;
+    @apply font-semibold;
+  }
+}
+
+@layer components {
+  /* Team Member Styles */
+  .team-member {
+    @apply overflow-hidden rounded-xl transition-all duration-300 hover:shadow-xl;
+  }
+  
+  .member-image {
+    @apply overflow-hidden bg-gray-200;
+    aspect-ratio: 4 / 3;
+  }
+  
+  .member-image img {
+    @apply w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105;
+  }
+  
+  /* Glass Components */
+  .glass {
+    @apply bg-white/30 backdrop-blur-lg border border-white/20 shadow-lg;
+  }
+
+  .glass-navbar {
+    @apply bg-white/80 backdrop-blur-md border-b border-white/30;
+  }
+
+  .glass-card {
+    @apply bg-white/50 backdrop-blur-sm border border-white/30 rounded-2xl shadow-md hover:bg-white/60 transition-all duration-300;
+  }
+
+  .glass-hover {
+    @apply bg-white/40 backdrop-blur-sm border border-white/30 rounded-2xl shadow-md hover:bg-white/50 hover:shadow-lg transition-all duration-300;
+  }
+  
+  /* Hero Gradient */
+  .hero-gradient {
+    @apply bg-gradient-to-br from-white via-blue-50 to-green-50;
+  }
+
+  /* Section Styles */
+  .section-header {
+    @apply text-center mb-16;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl font-bold text-gray-900 mb-4;
+    font-family: var(--font-poppins), Arial, sans-serif;
+  }
+
+  .section-subtitle {
+    @apply text-xl text-gray-600 max-w-3xl mx-auto;
+    font-family: var(--font-inter), Roboto, sans-serif;
+  }
+
+  /* Navigation */
+  .nav-link {
+    @apply text-gray-700 hover:text-primary font-medium transition-colors duration-300;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-[hsl(160,73%,30%)] transition-colors duration-300 shadow-md hover:shadow-lg;
+  }
+
+  .btn-outline {
+    @apply px-6 py-3 bg-transparent border-2 border-primary text-primary font-medium rounded-lg hover:bg-primary hover:text-white transition-colors duration-300;
+  }
+  
+  /* Form elements */
+  .form-input {
+    @apply w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+  }
+  
+  .form-label {
+    @apply block text-gray-700 font-medium mb-2;
+  }
+  
+  /* Cards */
+  .feature-card {
+    @apply glass-card p-6 transition-all duration-300 hover:-translate-y-1;
+  }
+  
+  .solution-item {
+    @apply glass-card p-6 flex items-start gap-4 transition-all duration-300 hover:-translate-y-1;
+  }
+  
+  .stat-card {
+    @apply glass-hover p-6 text-center transition-all duration-300 hover:-translate-y-1;
+  }
+  
+  /* Animations */
+  .fade-in-up {
+    @apply opacity-0 translate-y-4 animate-fade-in-up;
+  }
+
+  .fade-in-left {
+    @apply opacity-0 -translate-x-4 animate-fade-in-left;
+  }
+
+  .fade-in-right {
+    @apply opacity-0 translate-x-4 animate-fade-in-right;
+  }
+  
+  /* Grids */
+  .grid-responsive {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6;
+  }
+  
+  /* Contact section */
+  .contact-item {
+    @apply flex items-start gap-4;
+  }
+  
+  .contact-form {
+    @apply glass-card p-8;
+  }
+  
+  /* Footer */
+  .glass-footer {
+    @apply bg-white/30 backdrop-blur-lg border-t border-white/20 py-12 mt-16;
+  }
+  
+  .footer-content {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8;
+  }
+  
+  .footer-logo {
+    @apply space-y-4;
+  }
+  
+  .footer-logo .logo-text {
+    @apply text-2xl font-bold text-gray-900;
+    font-family: var(--font-poppins), Arial, sans-serif;
+  }
+  
+  .footer-links h4 {
+    @apply text-lg font-semibold mb-4 text-gray-900;
+    font-family: var(--font-poppins), Arial, sans-serif;
+  }
+  
+  .footer-links ul {
+    @apply space-y-2;
+  }
+  
+  .footer-links li a,
+  .footer-links li button {
+    @apply text-gray-600 hover:text-primary transition-colors duration-300;
+    font-family: var(--font-inter), Roboto, sans-serif;
+  }
+  
+  .social-icons {
+    @apply flex space-x-4 mt-4;
+  }
+  
+  .social-icon {
+    @apply w-10 h-10 rounded-full bg-white/50 backdrop-blur-sm border border-white/30 flex items-center justify-center transition-all duration-300 hover:bg-primary hover:text-white hover:scale-110;
+  }
+  
+  .footer-bottom {
+    @apply mt-12 pt-8 border-t border-white/30 text-center text-gray-600;
+    font-family: var(--font-roboto), Verdana, sans-serif;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in-up {
+    animation: fade-in-up 0.6s ease-out forwards;
+  }
+  
+  .animate-fade-in-left {
+    animation: fade-in-left 0.6s ease-out forwards;
+  }
+  
+  .animate-fade-in-right {
+    animation: fade-in-right 0.6s ease-out forwards;
+  }
+  
+  .py-25 {
+    @apply py-24;
+  }
+
+  /* Section Padding */
+  .section-py {
+    @apply py-24;
+  }
+
+  /* Text Gradient */
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary;
+  }
+  
+  /* Highlight text */
+  .highlight {
+    @apply text-gradient;
+  }
+  
+  /* Value items */
+  .value-item {
+    @apply glass-card p-4 text-center transition-all duration-300 hover:-translate-y-1;
+  }
+  
+  /* Stat items */
+  .stat-item {
+    @apply glass-card p-4 text-center;
+  }
+  
+  .stat-number {
+    @apply text-2xl font-bold text-primary;
+  }
+  
+  .stat-label {
+    @apply text-gray-600 mt-1;
+  }
+}
+
+@keyframes fade-in-up {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-left {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fade-in-right {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
