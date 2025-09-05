@@ -7,6 +7,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Logo from "@/components/ui/logo";
 import HeroCarousel from "@/components/ui/hero-carousel";
+import PlasticWasteCharts from "@/components/ui/plastic-waste-charts";
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -109,13 +110,13 @@ export default function Home() {
             
             {/* Desktop Navigation */}
             <div className="hidden md:flex space-x-10">
-              {['home', 'features', 'about', 'solutions', 'contact'].map((item) => (
+              {['home', 'features', 'about', 'plastic-waste', 'solutions', 'contact'].map((item) => (
                 <button
                   key={item}
-                  onClick={() => scrollToSection(item === 'home' ? 'hero' : item)}
+                  onClick={() => scrollToSection(item === 'home' ? 'hero' : item.replace('plastic-waste', 'plastic-waste'))}
                   className="nav-link capitalize"
                 >
-                  {item}
+                  {item.replace('plastic-waste', 'Plastic Waste')}
                 </button>
               ))}
             </div>
@@ -137,13 +138,13 @@ export default function Home() {
           {isMenuOpen && (
             <div className="md:hidden py-4 absolute top-20 left-0 right-0 bg-white shadow-lg">
               <div className="flex flex-col space-y-4 px-4">
-                {['home', 'features', 'about', 'solutions', 'contact'].map((item) => (
+                {['home', 'features', 'about', 'plastic-waste', 'solutions', 'contact'].map((item) => (
                   <button
                     key={item}
-                    onClick={() => scrollToSection(item === 'home' ? 'hero' : item)}
+                    onClick={() => scrollToSection(item === 'home' ? 'hero' : item.replace('plastic-waste', 'plastic-waste'))}
                     className="nav-link text-left capitalize py-2"
                   >
-                    {item}
+                    {item.replace('plastic-waste', 'Plastic Waste')}
                   </button>
                 ))}
               </div>
@@ -273,6 +274,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <PlasticWasteCharts />
 
       {/* Solutions Section */}
       <section id="solutions" className="bg-bg-secondary py-25">
