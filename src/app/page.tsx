@@ -277,30 +277,115 @@ export default function Home() {
 
       <PlasticWasteCharts />
 
-      {/* Solutions Section */}
-      <section id="solutions" className="bg-bg-secondary py-25">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Innovative Approaches Section */}
+      <section id="solutions" className="bg-gradient-to-br from-blue-50 to-green-50 py-25 relative overflow-hidden">
+        <div className="absolute top-20 -left-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-10 -right-20 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="section-header">
-            <h2 className="section-title">Our Solutions</h2>
+            <h2 className="section-title">Innovative Approaches</h2>
             <p className="section-subtitle">
-              Comprehensive approaches to tackle the plastic waste challenge
+              Cutting-edge solutions driving the plastic waste revolution
             </p>
           </div>
           
-          <div className="space-y-6">
-            {[
-              { icon: "📱", title: "Mobile Application", description: "Our user-friendly app empowers individuals to scan plastic items, locate recycling centers, and track their environmental impact while earning rewards." },
-              { icon: "🏭", title: "Corporate Solutions", description: "We provide businesses with data-driven insights into their plastic supply chains, helping optimize recycling processes and improve sustainability ratings." },
-              { icon: "📊", title: "Analytics Dashboard", description: "Real-time data visualization for governments and organizations to monitor recycling rates, waste patterns, and environmental impact across regions." }
-            ].map((solution, index) => (
-              <div key={index} className="solution-item glass-hover">
-                <div className="solution-icon">{solution.icon}</div>
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{solution.title}</h3>
-                  <p className="text-gray-600">{solution.description}</p>
-                </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="glass-card p-8 hover:shadow-xl transition-all duration-500 hover:-translate-y-2">
+              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
+                <span className="text-3xl">📱</span>
               </div>
-            ))}
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Smart Mobile Platform</h3>
+              <p className="text-gray-600 mb-4">
+                Our AI-powered app identifies plastic types instantly and guides users to proper recycling methods.
+              </p>
+              <ul className="space-y-2 mb-6">
+                <li className="flex items-center">
+                  <span className="text-green-500 mr-2">✓</span>
+                  <span>Real-time plastic identification</span>
+                </li>
+                <li className="flex items-center">
+                  <span className="text-green-500 mr-2">✓</span>
+                  <span>Personal impact tracking</span>
+                </li>
+                <li className="flex items-center">
+                  <span className="text-green-500 mr-2">✓</span>
+                  <span>Reward system for active users</span>
+                </li>
+              </ul>
+              <Button className="mt-4">Learn More</Button>
+            </div>
+            
+            <div className="glass-card p-8 hover:shadow-xl transition-all duration-500 hover:-translate-y-2">
+              <div className="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center mb-6">
+                <span className="text-3xl">🏭</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Enterprise Solutions</h3>
+              <p className="text-gray-600 mb-4">
+                Comprehensive tools for businesses to optimize their plastic usage and recycling processes.
+              </p>
+              <ul className="space-y-2 mb-6">
+                <li className="flex items-center">
+                  <span className="text-green-500 mr-2">✓</span>
+                  <span>Supply chain analytics</span>
+                </li>
+                <li className="flex items-center">
+                  <span className="text-green-500 mr-2">✓</span>
+                  <span>Compliance tracking</span>
+                </li>
+                <li className="flex items-center">
+                  <span className="text-green-500 mr-2">✓</span>
+                  <span>Custom sustainability reports</span>
+                </li>
+              </ul>
+              <Button className="mt-4" variant="outline">Explore</Button>
+            </div>
+            
+            <div className="glass-card p-8 hover:shadow-xl transition-all duration-500 hover:-translate-y-2">
+              <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center mb-6">
+                <span className="text-3xl">🌍</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Community Impact</h3>
+              <p className="text-gray-600 mb-4">
+                Building sustainable communities through education, engagement, and data-driven initiatives.
+              </p>
+              <ul className="space-y-2 mb-6">
+                <li className="flex items-center">
+                  <span className="text-green-500 mr-2">✓</span>
+                  <span>Local recycling programs</span>
+                </li>
+                <li className="flex items-center">
+                  <span className="text-green-500 mr-2">✓</span>
+                  <span>Educational workshops</span>
+                </li>
+                <li className="flex items-center">
+                  <span className="text-green-500 mr-2">✓</span>
+                  <span>Impact visualization dashboards</span>
+                </li>
+              </ul>
+              <Button className="mt-4" variant="outline">Discover</Button>
+            </div>
+          </div>
+          
+          <div className="mt-16 text-center">
+            <div className="glass-card p-8 max-w-4xl mx-auto">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Technology Stack</h3>
+              <p className="text-gray-600 mb-6">
+                We leverage cutting-edge technologies to deliver the most effective plastic waste management solutions
+              </p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {[
+                  { name: "AI & Machine Learning", icon: "🤖" },
+                  { name: "IoT Sensors", icon: "📡" },
+                  { name: "Blockchain", icon: "🔗" },
+                  { name: "Data Analytics", icon: "📊" }
+                ].map((tech, index) => (
+                  <div key={index} className="bg-white/50 p-4 rounded-xl flex flex-col items-center">
+                    <span className="text-2xl mb-2">{tech.icon}</span>
+                    <span className="text-sm font-medium text-gray-700">{tech.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
