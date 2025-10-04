@@ -6,7 +6,7 @@ const Logo = ({ className, showText = false }: { className?: string; showText?: 
     <div className={`flex items-center space-x-3 ${className || ''}`}>
       <div className="relative w-16 h-16 transition-transform duration-300 hover:scale-110 hover:rotate-2">
         <Image 
-          src="/Logo_F-1.png" 
+          src="/logo.png" 
           alt="Falkon Future X Logo" 
           width={80} 
           height={80}
