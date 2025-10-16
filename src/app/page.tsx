@@ -110,7 +110,7 @@ export default function Home() {
             
             {/* Desktop Navigation */}
             <div className="hidden md:flex space-x-10">
-              {['home', 'features', 'about', 'plastic-waste', 'solutions', 'contact'].map((item) => (
+              {['home', 'features', 'about', 'plastic-waste', 'services', 'solutions', 'contact'].map((item) => (
                 <button
                   key={item}
                   onClick={() => scrollToSection(item === 'home' ? 'hero' : item.replace('plastic-waste', 'plastic-waste'))}
@@ -138,7 +138,7 @@ export default function Home() {
           {isMenuOpen && (
             <div className="md:hidden py-4 absolute top-20 left-0 right-0 bg-white shadow-lg">
               <div className="flex flex-col space-y-4 px-4">
-                {['home', 'features', 'about', 'plastic-waste', 'solutions', 'contact'].map((item) => (
+                {['home', 'features', 'about', 'plastic-waste', 'services', 'solutions', 'contact'].map((item) => (
                   <button
                     key={item}
                     onClick={() => scrollToSection(item === 'home' ? 'hero' : item.replace('plastic-waste', 'plastic-waste'))}
@@ -276,6 +276,135 @@ export default function Home() {
       </section>
 
       <PlasticWasteCharts />
+
+      {/* Services Section */}
+      <section id="services" className="py-25 bg-bg-secondary">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="section-header">
+            <h2 className="section-title">Our Services</h2>
+            <p className="section-subtitle">
+              Comprehensive solutions for a sustainable future.{' '}
+              <a href="/services" className="text-primary hover:underline">
+                View all services →
+              </a>
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <a href="/services/water-bound-digises-solution" className="glass-card p-8 hover:shadow-xl transition-all duration-500 hover:-translate-y-2 block">
+              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
+                <span className="text-3xl">💧</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Water Bound Digises Solution</h3>
+              <p className="text-gray-600">
+                Advanced water management and digital solutions for efficient resource utilization.
+              </p>
+              <span className="inline-flex items-center text-primary font-medium mt-4">
+                Learn more
+                <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </span>
+            </a>
+            
+            <a href="/services/smart-waste-management-system" className="glass-card p-8 hover:shadow-xl transition-all duration-500 hover:-translate-y-2 block">
+              <div className="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center mb-6">
+                <span className="text-3xl">🗑️</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Smart Waste Management System</h3>
+              <p className="text-gray-600">
+                Cutting-edge technology for intelligent waste management and monitoring systems with new tech.
+              </p>
+              <span className="inline-flex items-center text-primary font-medium mt-4">
+                Learn more
+                <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </span>
+            </a>
+            
+            <a href="/services/cyber-awareness-guidance" className="glass-card p-8 hover:shadow-xl transition-all duration-500 hover:-translate-y-2 block">
+              <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center mb-6">
+                <span className="text-3xl">🔒</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Cyber Awareness Guidance & Consultancy</h3>
+              <p className="text-gray-600">
+                Expert consultancy and training programs to enhance cybersecurity awareness.
+              </p>
+              <span className="inline-flex items-center text-primary font-medium mt-4">
+                Learn more
+                <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </span>
+            </a>
+            
+            <a href="/services/e-commerce" className="glass-card p-8 hover:shadow-xl transition-all duration-500 hover:-translate-y-2 block">
+              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
+                <span className="text-3xl">🛒</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">E-Commerce</h3>
+              <p className="text-gray-600">
+                Complete e-commerce solutions to grow your business in the digital marketplace.
+              </p>
+              <span className="inline-flex items-center text-primary font-medium mt-4">
+                Learn more
+                <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </span>
+            </a>
+            
+            <a href="/services/smart-healthcare-solutions" className="glass-card p-8 hover:shadow-xl transition-all duration-500 hover:-translate-y-2 block">
+              <div className="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center mb-6">
+                <span className="text-3xl">🏥</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Smart Healthcare Solutions</h3>
+              <p className="text-gray-600">
+                Innovative healthcare solutions focused on quality and customer satisfaction.
+              </p>
+              <span className="inline-flex items-center text-primary font-medium mt-4">
+                Learn more
+                <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </span>
+            </a>
+            
+            <a href="/services/food-delivery" className="glass-card p-8 hover:shadow-xl transition-all duration-500 hover:-translate-y-2 block">
+              <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center mb-6">
+                <span className="text-3xl">🍽️</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Food Delivery</h3>
+              <p className="text-gray-600">
+                Efficient and sustainable food delivery services connecting consumers with quality providers.
+              </p>
+              <span className="inline-flex items-center text-primary font-medium mt-4">
+                Learn more
+                <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </span>
+            </a>
+            
+            <a href="/services/new-renewable-energy" className="glass-card p-8 hover:shadow-xl transition-all duration-500 hover:-translate-y-2 md:col-span-2 lg:col-span-1 lg:col-start-2 block">
+              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
+                <span className="text-3xl">☀️</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">New Renewable Energy</h3>
+              <p className="text-gray-600">
+                Sustainable energy solutions harnessing the power of renewable resources for a cleaner future.
+              </p>
+              <span className="inline-flex items-center text-primary font-medium mt-4">
+                Learn more
+                <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </span>
+            </a>
+          </div>
+        </div>
+      </section>
 
       {/* Innovative Approaches Section */}
       <section id="solutions" className="bg-gradient-to-br from-blue-50 to-green-50 py-25 relative overflow-hidden">
@@ -592,10 +721,10 @@ India</p>
             <div className="footer-links">
               <h4 className="font-poppins">Quick Links</h4>
               <ul>
-                {['Home', 'Features', 'About', 'Solutions', 'Contact'].map((link) => (
+                {['Home', 'Features', 'About', 'Services', 'Solutions', 'Contact'].map((link) => (
                   <li key={link}>
                     <button 
-                      onClick={() => scrollToSection(link.toLowerCase() === 'home' ? 'hero' : link.toLowerCase())}
+                      onClick={() => scrollToSection(link.toLowerCase() === 'home' ? 'hero' : link.toLowerCase() === 'services' ? 'services' : link.toLowerCase())}
                       className="hover:text-primary transition-colors duration-300"
                     >
                       {link}
