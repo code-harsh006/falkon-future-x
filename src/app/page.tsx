@@ -619,7 +619,7 @@ India</p>
                   <div className="text-2xl">📧</div>
                   <div>
                     <h4 className="font-semibold text-gray-900">Email</h4>
-                    <p className="text-gray-600">info@falkonfuturex.com</p>
+                    <p className="text-gray-600">falkonfuturex@gmail.com</p>
                   </div>
                 </div>
                 
