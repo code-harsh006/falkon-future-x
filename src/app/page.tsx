@@ -110,13 +110,13 @@ export default function Home() {
             
             {/* Desktop Navigation */}
             <div className="hidden md:flex space-x-10">
-              {['home', 'features', 'about', 'plastic-waste', 'services', 'solutions', 'contact'].map((item) => (
+              {['home', 'features', 'about', 'plastic-waste', 'services', 'solutions', 'team', 'contact'].map((item) => (
                 <button
                   key={item}
                   onClick={() => scrollToSection(item === 'home' ? 'hero' : item.replace('plastic-waste', 'plastic-waste'))}
                   className="nav-link capitalize"
                 >
-                  {item.replace('plastic-waste', 'Plastic Waste')}
+                  {item.replace('plastic-waste', 'Plastic Waste').replace('team', 'Our Team')}
                 </button>
               ))}
             </div>
@@ -138,13 +138,13 @@ export default function Home() {
           {isMenuOpen && (
             <div className="md:hidden py-4 absolute top-20 left-0 right-0 bg-white shadow-lg">
               <div className="flex flex-col space-y-4 px-4">
-                {['home', 'features', 'about', 'plastic-waste', 'services', 'solutions', 'contact'].map((item) => (
+                {['home', 'features', 'about', 'plastic-waste', 'services', 'solutions', 'team', 'contact'].map((item) => (
                   <button
                     key={item}
                     onClick={() => scrollToSection(item === 'home' ? 'hero' : item.replace('plastic-waste', 'plastic-waste'))}
                     className="nav-link text-left capitalize py-2"
                   >
-                    {item.replace('plastic-waste', 'Plastic Waste')}
+                    {item.replace('plastic-waste', 'Plastic Waste').replace('team', 'Our Team')}
                   </button>
                 ))}
               </div>
@@ -549,7 +549,7 @@ export default function Home() {
       </section>
 
       {/* Team Section */}
-      <section className="py-25 bg-bg-secondary">
+      <section id="team" className="py-25 bg-bg-secondary">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="section-header">
             <h2 className="section-title">Our Team</h2>
