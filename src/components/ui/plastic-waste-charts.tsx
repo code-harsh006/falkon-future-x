@@ -3,14 +3,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 const PlasticWasteCharts = () => {
-  const chart1Ref = useRef<HTMLCanvasElement>(null);
-  const chart2Ref = useRef<HTMLCanvasElement>(null);
-  const chart3Ref = useRef<HTMLCanvasElement>(null);
+  const chartRef = useRef<HTMLCanvasElement>(null);
   const [darkMode, setDarkMode] = useState(false);
   const [animationProgress, setAnimationProgress] = useState(0);
-  const [hoveredPoint, setHoveredPoint] = useState<{chart: number, point: number} | null>(null);
+  const [activeDataset, setActiveDataset] = useState(0);
+  const [hoveredPoint, setHoveredPoint] = useState<{x: number, y: number, value: number, label: string} | null>(null);
 
-  // Data from the provided information
   const wasteData = [
     { year: '2013-14', waste: 2.9, recycled: 0.9, mismanaged: 2.0 },
     { year: '2014-15', waste: 3.0, recycled: 1.0, mismanaged: 2.0 },
@@ -37,38 +35,33 @@ const PlasticWasteCharts = () => {
     { year: '2022-23', demand: 17 }
   ];
 
-  // Check for dark mode preference
+  const datasets = [
+    { name: 'Plastic Waste Generated', data: wasteData, key: 'waste', color: '#10b981', unit: 'Million Tonnes' },
+    { name: 'Waste vs Recycled vs Mismanaged', data: wasteData, key: 'all', unit: 'Million Tonnes' },
+    { name: 'Polymer Demand Trend', data: productionData, key: 'demand', color: '#8b5cf6', unit: 'Million Tonnes' }
+  ];
+
   useEffect(() => {
     const checkDarkMode = () => {
       const isDark = document.documentElement.classList.contains('dark') || 
         (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
       setDarkMode(isDark);
     };
-
     checkDarkMode();
-    
-    // Listen for changes in theme
-    const observer = new MutationObserver(() => {
-      checkDarkMode();
-    });
-    
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class']
-    });
-    
+    const observer = new MutationObserver(() => { checkDarkMode(); });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
     return () => observer.disconnect();
   }, []);
 
-  // Animate charts on load
   useEffect(() => {
     let start: number | null = null;
-    const duration = 1000; // Animation duration in ms
+    const duration = 1500;
     
     const animate = (timestamp: number) => {
       if (!start) start = timestamp;
       const progress = Math.min((timestamp - start) / duration, 1);
-      setAnimationProgress(progress);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setAnimationProgress(eased);
       
       if (progress < 1) {
         requestAnimationFrame(animate);
@@ -76,568 +69,251 @@ const PlasticWasteCharts = () => {
     };
     
     requestAnimationFrame(animate);
-  }, []);
+  }, [activeDataset]);
 
-  // Redraw charts when dark mode or animation progress changes
   useEffect(() => {
-    drawCharts();
-  }, [darkMode, animationProgress, hoveredPoint]);
+    setAnimationProgress(0);
+    let start: number | null = null;
+    const duration = 1500;
+    
+    const animate = (timestamp: number) => {
+      if (!start) start = timestamp;
+      const progress = Math.min((timestamp - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setAnimationProgress(eased);
+      
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+    
+    requestAnimationFrame(animate);
+  }, [activeDataset]);
 
-  // Helper function to create gradient
-  const createGradient = (ctx: CanvasRenderingContext2D, x1: number, y1: number, x2: number, y2: number, color1: string, color2: string) => {
-    const gradient = ctx.createLinearGradient(x1, y1, x2, y2);
-    gradient.addColorStop(0, color1);
-    gradient.addColorStop(1, color2);
+  const createGradient = (ctx: CanvasRenderingContext2D, color: string) => {
+    const gradient = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height);
+    gradient.addColorStop(0, `${color}40`);
+    gradient.addColorStop(1, `${color}05`);
     return gradient;
   };
 
-  // Helper function to draw smooth line
   const drawSmoothLine = (ctx: CanvasRenderingContext2D, points: {x: number, y: number}[], color: string, lineWidth: number = 3) => {
     if (points.length < 2) return;
-    
     ctx.strokeStyle = color;
     ctx.lineWidth = lineWidth;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
-    
     ctx.beginPath();
     ctx.moveTo(points[0].x, points[0].y);
-    
     for (let i = 1; i < points.length; i++) {
       const xc = (points[i].x + points[i - 1].x) / 2;
       const yc = (points[i].y + points[i - 1].y) / 2;
       ctx.quadraticCurveTo(points[i - 1].x, points[i - 1].y, xc, yc);
     }
-    
     ctx.lineTo(points[points.length - 1].x, points[points.length - 1].y);
     ctx.stroke();
   };
 
-  // Helper function to draw area under line
-  const drawAreaUnderLine = (ctx: CanvasRenderingContext2D, points: {x: number, y: number}[], gradient: CanvasGradient, bottomY: number) => {
-    if (points.length < 2) return;
+  const drawCharts = () => {
+    if (!chartRef.current) return;
+    const ctx = chartRef.current.getContext('2d');
+    if (!ctx) return;
     
-    ctx.fillStyle = gradient;
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    
+    const width = ctx.canvas.width;
+    const height = ctx.canvas.height;
+    const padding = 100;
+    
+    const textColor = darkMode ? '#e5e7eb' : '#374151';
+    const gridColor = darkMode ? '#4b556320' : '#e5e7eb50';
+    const bgColor = darkMode ? '#1f2937' : '#ffffff';
+    
+    ctx.fillStyle = bgColor;
+    ctx.fillRect(0, 0, width, height);
+    
+    const currentDataset = datasets[activeDataset];
+    const data = currentDataset.data;
+    const maxValue = activeDataset === 1 
+      ? Math.max(...wasteData.map(d => d.waste))
+      : Math.max(...data.map((d: any) => d[currentDataset.key as keyof typeof d] as number));
+    
+    ctx.strokeStyle = gridColor;
+    ctx.lineWidth = 1;
+    ctx.setLineDash([5, 5]);
+    for (let i = 0; i <= 5; i++) {
+      const y = padding + i * (height - 2 * padding) / 5;
+      ctx.beginPath();
+      ctx.moveTo(padding, y);
+      ctx.lineTo(width - padding, y);
+      ctx.stroke();
+    }
+    ctx.setLineDash([]);
+    
+    ctx.strokeStyle = textColor;
+    ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.moveTo(points[0].x, bottomY);
+    ctx.moveTo(padding, height - padding);
+    ctx.lineTo(width - padding, height - padding);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(padding, padding);
+    ctx.lineTo(padding, height - padding);
+    ctx.stroke();
     
-    for (let i = 1; i < points.length; i++) {
-      const xc = (points[i].x + points[i - 1].x) / 2;
-      const yc = (points[i].y + points[i - 1].y) / 2;
-      ctx.quadraticCurveTo(points[i - 1].x, points[i - 1].y, xc, yc);
+    const animatedLength = Math.floor(data.length * animationProgress);
+    const partialProgress = (data.length * animationProgress) % 1;
+    
+    const colors = ['#10b981', '#3b82f6', '#f59e0b'];
+    
+    if (activeDataset === 1) {
+      const keys = ['waste', 'recycled', 'mismanaged'] as const;
+      const labels = ['Total Waste', 'Recycled', 'Mismanaged'];
+      
+      keys.forEach((key, idx) => {
+        const points: {x: number, y: number}[] = [];
+        for (let i = 0; i <= animatedLength; i++) {
+          if (i >= data.length) break;
+          const d = data[i] as any;
+          const x = padding + i * (width - 2 * padding) / (data.length - 1);
+          const actualProgress = i < animatedLength ? 1 : partialProgress;
+          const val = d[key] as number;
+          points.push({
+            x,
+            y: height - padding - ((val * actualProgress) / maxValue) * (height - 2 * padding)
+          });
+        }
+        
+        if (points.length > 1) {
+          ctx.fillStyle = createGradient(ctx, colors[idx]);
+          ctx.beginPath();
+          ctx.moveTo(points[0].x, height - padding);
+          points.forEach(p => ctx.lineTo(p.x, p.y));
+          ctx.lineTo(points[points.length - 1].x, height - padding);
+          ctx.closePath();
+          ctx.fill();
+          drawSmoothLine(ctx, points, colors[idx], 3);
+        }
+      });
+      
+      const legendY = padding + 10;
+      const legendX = width - padding - 120;
+      labels.forEach((label, i) => {
+        ctx.fillStyle = colors[i];
+        ctx.fillRect(legendX, legendY + i * 22, 15, 15);
+        ctx.fillStyle = textColor;
+        ctx.font = '12px sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(label, legendX + 20, legendY + i * 22 + 12);
+      });
+    } else {
+      const points: {x: number, y: number}[] = [];
+      for (let i = 0; i <= animatedLength; i++) {
+        if (i >= data.length) break;
+        const d = data[i] as any;
+        const x = padding + i * (width - 2 * padding) / (data.length - 1);
+        const actualProgress = i < animatedLength ? 1 : partialProgress;
+        const val = d[currentDataset.key as keyof typeof d] as number;
+        points.push({
+          x,
+          y: height - padding - ((val * actualProgress) / maxValue) * (height - 2 * padding)
+        });
+      }
+      
+      if (points.length > 1) {
+        const color = currentDataset.color || '#10b981';
+        ctx.fillStyle = createGradient(ctx, color);
+        ctx.beginPath();
+        ctx.moveTo(points[0].x, height - padding);
+        points.forEach(p => ctx.lineTo(p.x, p.y));
+        ctx.lineTo(points[points.length - 1].x, height - padding);
+        ctx.closePath();
+        ctx.fill();
+        drawSmoothLine(ctx, points, color, 4);
+      }
+      
+      points.forEach((point, i) => {
+        const color = currentDataset.color || '#10b981';
+        const isHovered = hoveredPoint && Math.abs(hoveredPoint.x - point.x) < 20;
+        const radius = isHovered ? 8 : 5;
+        
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, radius, 0, 2 * Math.PI);
+        ctx.fillStyle = isHovered ? '#ffffff' : color;
+        ctx.fill();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = isHovered ? 3 : 2;
+        ctx.stroke();
+        
+        if (isHovered && hoveredPoint) {
+          ctx.fillStyle = textColor;
+          ctx.font = 'bold 12px sans-serif';
+          ctx.textAlign = 'center';
+          const val = (data[i] as any)[currentDataset.key as keyof typeof data[0]] as number;
+          ctx.fillText(`${val}`, point.x, point.y - 15);
+        }
+      });
     }
     
-    ctx.lineTo(points[points.length - 1].x, bottomY);
-    ctx.closePath();
-    ctx.fill();
+    ctx.fillStyle = textColor;
+    ctx.font = '11px sans-serif';
+    ctx.textAlign = 'center';
+    data.forEach((d: any, i: number) => {
+      const x = padding + i * (width - 2 * padding) / (data.length - 1);
+      ctx.fillText(d.year, x, height - padding + 20);
+    });
+    
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    for (let i = 0; i <= 5; i++) {
+      const y = height - padding - i * (height - 2 * padding) / 5;
+      const value = (i * maxValue / 5).toFixed(1);
+      ctx.fillText(value, padding - 15, y);
+    }
+    
+    ctx.fillStyle = darkMode ? '#f9fafb' : '#111827';
+    ctx.font = 'bold 20px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText(currentDataset.name, width / 2, 15);
+    
+    ctx.save();
+    ctx.translate(25, height / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.textAlign = 'center';
+    ctx.font = 'bold 12px sans-serif';
+    ctx.fillText(currentDataset.unit, 0, 0);
+    ctx.restore();
   };
 
-  // Mouse event handlers for interactive charts
-  const handleMouseMove = (event: React.MouseEvent<HTMLCanvasElement>, chartIndex: number) => {
+  useEffect(() => {
+    drawCharts();
+  }, [darkMode, animationProgress, activeDataset, hoveredPoint]);
+
+  const handleMouseMove = (event: React.MouseEvent<HTMLCanvasElement>) => {
     const canvas = event.currentTarget;
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
     
-    // Calculate which data point is closest
-    const padding = 80;
+    const data = datasets[activeDataset].data;
+    const padding = 100;
     const width = canvas.width;
     const height = canvas.height;
     
-    let closestPoint = -1;
-    let minDistance = Infinity;
-    
-    const dataLength = chartIndex === 3 ? productionData.length : wasteData.length;
-    
-    for (let i = 0; i < dataLength; i++) {
-      const pointX = padding + i * (width - 2 * padding) / (dataLength - 1);
-      const distance = Math.abs(x - pointX);
-      
-      if (distance < minDistance && distance < 30) { // 30px tolerance
-        minDistance = distance;
-        closestPoint = i;
+    for (let i = 0; i < data.length; i++) {
+      const pointX = padding + i * (width - 2 * padding) / (data.length - 1);
+      if (Math.abs(x - pointX) < 20) {
+        const maxValue = activeDataset === 1 
+          ? Math.max(...wasteData.map(d => d.waste))
+          : Math.max(...data.map((d: any) => d[datasets[activeDataset].key as keyof typeof d] as number));
+        const val = data[i] as any;
+        const pointY = height - padding - ((val[datasets[activeDataset].key as keyof typeof val] as number) / maxValue) * (height - 2 * padding);
+        setHoveredPoint({ x: pointX, y: pointY, value: val[datasets[activeDataset].key as keyof typeof val] as number, label: val.year });
+        return;
       }
     }
-    
-    if (closestPoint !== -1) {
-      setHoveredPoint({chart: chartIndex, point: closestPoint});
-    } else {
-      setHoveredPoint(null);
-    }
-  };
-
-  const handleMouseLeave = () => {
     setHoveredPoint(null);
-  };
-
-  const drawCharts = () => {
-    // Chart 1: Plastic Waste Generated (2013–2023) - Line Chart
-    if (chart1Ref.current) {
-      const ctx = chart1Ref.current.getContext('2d');
-      if (ctx) {
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        
-        // Chart dimensions
-        const width = ctx.canvas.width;
-        const height = ctx.canvas.height;
-        const padding = 80;
-        
-        // Colors based on theme
-        const textColor = darkMode ? '#e5e7eb' : '#374151';
-        const gridColor = darkMode ? '#4b5563' : '#e5e7eb';
-        const bgColor = darkMode ? '#1f2937' : '#ffffff';
-        const primaryColor = '#10b981';
-        const primaryGradient = darkMode ? '#047857' : '#059669';
-        
-        // Find max value for scaling
-        const maxValue = Math.max(...wasteData.map(d => d.waste));
-        
-        // Draw background
-        ctx.fillStyle = bgColor;
-        ctx.fillRect(0, 0, width, height);
-        
-        // Draw grid with subtle lines
-        ctx.strokeStyle = gridColor;
-        ctx.lineWidth = 0.5;
-        ctx.setLineDash([5, 5]);
-        
-        // Draw Y axis grid lines
-        for (let i = 0; i <= 5; i++) {
-          const y = padding + i * (height - 2 * padding) / 5;
-          ctx.beginPath();
-          ctx.moveTo(padding, y);
-          ctx.lineTo(width - padding, y);
-          ctx.stroke();
-        }
-        
-        ctx.setLineDash([]);
-        
-        // Draw axes
-        ctx.strokeStyle = textColor;
-        ctx.lineWidth = 2;
-        
-        // Draw X axis
-        ctx.beginPath();
-        ctx.moveTo(padding, height - padding);
-        ctx.lineTo(width - padding, height - padding);
-        ctx.stroke();
-        
-        // Draw Y axis
-        ctx.beginPath();
-        ctx.moveTo(padding, padding);
-        ctx.lineTo(padding, height - padding);
-        ctx.stroke();
-        
-        // Calculate points for the line
-        const animatedDataLength = Math.floor(wasteData.length * animationProgress);
-        const partialProgress = (wasteData.length * animationProgress) % 1;
-        const points: {x: number, y: number}[] = [];
-        
-        for (let i = 0; i <= animatedDataLength; i++) {
-          if (i >= wasteData.length) break;
-          
-          const d = wasteData[i];
-          const x = padding + i * (width - 2 * padding) / (wasteData.length - 1);
-          const actualProgress = i < animatedDataLength ? 1 : partialProgress;
-          const y = height - padding - ((d.waste * actualProgress) / maxValue) * (height - 2 * padding);
-          points.push({x, y});
-        }
-        
-        // Draw area under the line
-        if (points.length > 1) {
-          const gradient = createGradient(ctx, 0, padding, 0, height - padding, 
-            `${primaryColor}40`, `${primaryColor}10`);
-          drawAreaUnderLine(ctx, points, gradient, height - padding);
-        }
-        
-        // Draw the line
-        if (points.length > 1) {
-          drawSmoothLine(ctx, points, primaryColor, 4);
-        }
-        
-        // Draw data points
-        points.forEach((point, i) => {
-          const isHovered = hoveredPoint?.chart === 1 && hoveredPoint?.point === i;
-          const radius = isHovered ? 8 : 5;
-          
-          ctx.beginPath();
-          ctx.arc(point.x, point.y, radius, 0, 2 * Math.PI);
-          ctx.fillStyle = isHovered ? '#ffffff' : primaryColor;
-          ctx.fill();
-          ctx.strokeStyle = primaryColor;
-          ctx.lineWidth = isHovered ? 3 : 2;
-          ctx.stroke();
-          
-          // Draw value on hover
-          if (isHovered) {
-            ctx.fillStyle = textColor;
-            ctx.font = 'bold 12px sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillText(`${wasteData[i].waste}M`, point.x, point.y - 15);
-          }
-        });
-        
-        // X axis labels
-        ctx.fillStyle = textColor;
-        ctx.font = '11px sans-serif';
-        ctx.textAlign = 'center';
-        wasteData.forEach((d, i) => {
-          const x = padding + i * (width - 2 * padding) / (wasteData.length - 1);
-          ctx.fillText(d.year, x, height - padding + 20);
-        });
-        
-        // Y axis labels
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        for (let i = 0; i <= 5; i++) {
-          const y = height - padding - i * (height - 2 * padding) / 5;
-          const value = (i * maxValue / 5).toFixed(1);
-          ctx.fillText(value, padding - 15, y);
-        }
-        
-        // Draw title
-        ctx.fillStyle = darkMode ? '#f9fafb' : '#111827';
-        ctx.font = 'bold 18px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillText('Plastic Waste Generated (2013-2023)', width / 2, 15);
-        
-        // Draw Y axis label
-        ctx.save();
-        ctx.translate(25, height / 2);
-        ctx.rotate(-Math.PI / 2);
-        ctx.textAlign = 'center';
-        ctx.font = 'bold 12px sans-serif';
-        ctx.fillText('Million Tonnes', 0, 0);
-        ctx.restore();
-      }
-    }
-    
-    // Chart 2: Waste vs Recycled vs Mismanaged - Multi-Line Chart
-    if (chart2Ref.current) {
-      const ctx = chart2Ref.current.getContext('2d');
-      if (ctx) {
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        
-        // Chart dimensions
-        const width = ctx.canvas.width;
-        const height = ctx.canvas.height;
-        const padding = 80;
-        
-        // Colors based on theme
-        const textColor = darkMode ? '#e5e7eb' : '#374151';
-        const gridColor = darkMode ? '#4b5563' : '#e5e7eb';
-        const bgColor = darkMode ? '#1f2937' : '#ffffff';
-        
-        // Line colors
-        const wasteColor = '#10b981';
-        const recycledColor = '#3b82f6';
-        const mismanagedColor = '#f59e0b';
-        
-        // Find max value for scaling
-        const maxValue = Math.max(...wasteData.map(d => Math.max(d.waste, d.recycled, d.mismanaged)));
-        
-        // Draw background
-        ctx.fillStyle = bgColor;
-        ctx.fillRect(0, 0, width, height);
-        
-        // Draw grid with subtle lines
-        ctx.strokeStyle = gridColor;
-        ctx.lineWidth = 0.5;
-        ctx.setLineDash([5, 5]);
-        
-        // Draw Y axis grid lines
-        for (let i = 0; i <= 5; i++) {
-          const y = padding + i * (height - 2 * padding) / 5;
-          ctx.beginPath();
-          ctx.moveTo(padding, y);
-          ctx.lineTo(width - padding, y);
-          ctx.stroke();
-        }
-        
-        ctx.setLineDash([]);
-        
-        // Draw axes
-        ctx.strokeStyle = textColor;
-        ctx.lineWidth = 2;
-        
-        // Draw X axis
-        ctx.beginPath();
-        ctx.moveTo(padding, height - padding);
-        ctx.lineTo(width - padding, height - padding);
-        ctx.stroke();
-        
-        // Draw Y axis
-        ctx.beginPath();
-        ctx.moveTo(padding, padding);
-        ctx.lineTo(padding, height - padding);
-        ctx.stroke();
-        
-        // Calculate points for each line
-        const animatedDataLength = Math.floor(wasteData.length * animationProgress);
-        const partialProgress = (wasteData.length * animationProgress) % 1;
-        
-        const wastePoints: {x: number, y: number}[] = [];
-        const recycledPoints: {x: number, y: number}[] = [];
-        const mismanagedPoints: {x: number, y: number}[] = [];
-        
-        for (let i = 0; i <= animatedDataLength; i++) {
-          if (i >= wasteData.length) break;
-          
-          const d = wasteData[i];
-          const x = padding + i * (width - 2 * padding) / (wasteData.length - 1);
-          const actualProgress = i < animatedDataLength ? 1 : partialProgress;
-          
-          wastePoints.push({
-            x,
-            y: height - padding - ((d.waste * actualProgress) / maxValue) * (height - 2 * padding)
-          });
-          
-          recycledPoints.push({
-            x,
-            y: height - padding - ((d.recycled * actualProgress) / maxValue) * (height - 2 * padding)
-          });
-          
-          mismanagedPoints.push({
-            x,
-            y: height - padding - ((d.mismanaged * actualProgress) / maxValue) * (height - 2 * padding)
-          });
-        }
-        
-        // Draw lines
-        if (wastePoints.length > 1) {
-          drawSmoothLine(ctx, wastePoints, wasteColor, 3);
-        }
-        if (recycledPoints.length > 1) {
-          drawSmoothLine(ctx, recycledPoints, recycledColor, 3);
-        }
-        if (mismanagedPoints.length > 1) {
-          drawSmoothLine(ctx, mismanagedPoints, mismanagedColor, 3);
-        }
-        
-        // Draw data points
-        const allPoints = [
-          {points: wastePoints, color: wasteColor, label: 'Waste Generated'},
-          {points: recycledPoints, color: recycledColor, label: 'Recycled'},
-          {points: mismanagedPoints, color: mismanagedColor, label: 'Mismanaged'}
-        ];
-        
-        allPoints.forEach((lineData, lineIndex) => {
-          lineData.points.forEach((point, i) => {
-            const isHovered = hoveredPoint?.chart === 2 && hoveredPoint?.point === i;
-            const radius = isHovered ? 6 : 4;
-            
-            ctx.beginPath();
-            ctx.arc(point.x, point.y, radius, 0, 2 * Math.PI);
-            ctx.fillStyle = isHovered ? '#ffffff' : lineData.color;
-            ctx.fill();
-            ctx.strokeStyle = lineData.color;
-            ctx.lineWidth = isHovered ? 2 : 1;
-            ctx.stroke();
-          });
-        });
-        
-        // X axis labels
-        ctx.fillStyle = textColor;
-        ctx.font = '11px sans-serif';
-        ctx.textAlign = 'center';
-        wasteData.forEach((d, i) => {
-          const x = padding + i * (width - 2 * padding) / (wasteData.length - 1);
-          ctx.fillText(d.year, x, height - padding + 20);
-        });
-        
-        // Y axis labels
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        for (let i = 0; i <= 5; i++) {
-          const y = height - padding - i * (height - 2 * padding) / 5;
-          const value = (i * maxValue / 5).toFixed(1);
-          ctx.fillText(value, padding - 15, y);
-        }
-        
-        // Draw legend
-        ctx.font = 'bold 12px sans-serif';
-        ctx.textAlign = 'left';
-        
-        const legendY = padding + 10;
-        const legendX = width - padding - 150;
-        
-        // Waste legend
-        ctx.fillStyle = wasteColor;
-        ctx.fillRect(legendX, legendY, 15, 15);
-        ctx.fillStyle = textColor;
-        ctx.fillText('Waste Generated', legendX + 20, legendY + 12);
-        
-        // Recycled legend
-        ctx.fillStyle = recycledColor;
-        ctx.fillRect(legendX, legendY + 25, 15, 15);
-        ctx.fillStyle = textColor;
-        ctx.fillText('Recycled', legendX + 20, legendY + 37);
-        
-        // Mismanaged legend
-        ctx.fillStyle = mismanagedColor;
-        ctx.fillRect(legendX, legendY + 50, 15, 15);
-        ctx.fillStyle = textColor;
-        ctx.fillText('Mismanaged', legendX + 20, legendY + 62);
-        
-        // Draw title
-        ctx.fillStyle = darkMode ? '#f9fafb' : '#111827';
-        ctx.font = 'bold 18px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillText('Waste vs Recycled vs Mismanaged', width / 2, 15);
-        
-        // Draw Y axis label
-        ctx.save();
-        ctx.translate(25, height / 2);
-        ctx.rotate(-Math.PI / 2);
-        ctx.textAlign = 'center';
-        ctx.font = 'bold 12px sans-serif';
-        ctx.fillText('Million Tonnes', 0, 0);
-        ctx.restore();
-      }
-    }
-    
-    // Chart 3: Polymer Demand (Production trend) - Line Chart
-    if (chart3Ref.current) {
-      const ctx = chart3Ref.current.getContext('2d');
-      if (ctx) {
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        
-        // Chart dimensions
-        const width = ctx.canvas.width;
-        const height = ctx.canvas.height;
-        const padding = 80;
-        
-        // Colors based on theme
-        const textColor = darkMode ? '#e5e7eb' : '#374151';
-        const gridColor = darkMode ? '#4b5563' : '#e5e7eb';
-        const bgColor = darkMode ? '#1f2937' : '#ffffff';
-        const primaryColor = '#8b5cf6';
-        
-        // Find max value for scaling
-        const maxValue = Math.max(...productionData.map(d => d.demand));
-        
-        // Draw background
-        ctx.fillStyle = bgColor;
-        ctx.fillRect(0, 0, width, height);
-        
-        // Draw grid with subtle lines
-        ctx.strokeStyle = gridColor;
-        ctx.lineWidth = 0.5;
-        ctx.setLineDash([5, 5]);
-        
-        // Draw Y axis grid lines
-        for (let i = 0; i <= 5; i++) {
-          const y = padding + i * (height - 2 * padding) / 5;
-          ctx.beginPath();
-          ctx.moveTo(padding, y);
-          ctx.lineTo(width - padding, y);
-          ctx.stroke();
-        }
-        
-        ctx.setLineDash([]);
-        
-        // Draw axes
-        ctx.strokeStyle = textColor;
-        ctx.lineWidth = 2;
-        
-        // Draw X axis
-        ctx.beginPath();
-        ctx.moveTo(padding, height - padding);
-        ctx.lineTo(width - padding, height - padding);
-        ctx.stroke();
-        
-        // Draw Y axis
-        ctx.beginPath();
-        ctx.moveTo(padding, padding);
-        ctx.lineTo(padding, height - padding);
-        ctx.stroke();
-        
-        // Calculate points for the line
-        const animatedDataLength = Math.floor(productionData.length * animationProgress);
-        const partialProgress = (productionData.length * animationProgress) % 1;
-        const points: {x: number, y: number}[] = [];
-        
-        for (let i = 0; i <= animatedDataLength; i++) {
-          if (i >= productionData.length) break;
-          
-          const d = productionData[i];
-          const x = padding + i * (width - 2 * padding) / (productionData.length - 1);
-          const actualProgress = i < animatedDataLength ? 1 : partialProgress;
-          const y = height - padding - ((d.demand * actualProgress) / maxValue) * (height - 2 * padding);
-          points.push({x, y});
-        }
-        
-        // Draw area under the line
-        if (points.length > 1) {
-          const gradient = createGradient(ctx, 0, padding, 0, height - padding, 
-            `${primaryColor}40`, `${primaryColor}10`);
-          drawAreaUnderLine(ctx, points, gradient, height - padding);
-        }
-        
-        // Draw the line
-        if (points.length > 1) {
-          drawSmoothLine(ctx, points, primaryColor, 4);
-        }
-        
-        // Draw data points
-        points.forEach((point, i) => {
-          const isHovered = hoveredPoint?.chart === 3 && hoveredPoint?.point === i;
-          const radius = isHovered ? 8 : 5;
-          
-          ctx.beginPath();
-          ctx.arc(point.x, point.y, radius, 0, 2 * Math.PI);
-          ctx.fillStyle = isHovered ? '#ffffff' : primaryColor;
-          ctx.fill();
-          ctx.strokeStyle = primaryColor;
-          ctx.lineWidth = isHovered ? 3 : 2;
-          ctx.stroke();
-          
-          // Draw value on hover
-          if (isHovered) {
-            ctx.fillStyle = textColor;
-            ctx.font = 'bold 12px sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillText(`${productionData[i].demand}M`, point.x, point.y - 15);
-          }
-        });
-        
-        // X axis labels
-        ctx.fillStyle = textColor;
-        ctx.font = '11px sans-serif';
-        ctx.textAlign = 'center';
-        productionData.forEach((d, i) => {
-          const x = padding + i * (width - 2 * padding) / (productionData.length - 1);
-          ctx.fillText(d.year, x, height - padding + 20);
-        });
-        
-        // Y axis labels
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        for (let i = 0; i <= 5; i++) {
-          const y = height - padding - i * (height - 2 * padding) / 5;
-          const value = (i * maxValue / 5).toFixed(1);
-          ctx.fillText(value, padding - 15, y);
-        }
-        
-        // Draw title
-        ctx.fillStyle = darkMode ? '#f9fafb' : '#111827';
-        ctx.font = 'bold 18px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillText('Polymer Demand (Production trend)', width / 2, 15);
-        
-        // Draw Y axis label
-        ctx.save();
-        ctx.translate(25, height / 2);
-        ctx.rotate(-Math.PI / 2);
-        ctx.textAlign = 'center';
-        ctx.font = 'bold 12px sans-serif';
-        ctx.fillText('Million Tonnes', 0, 0);
-        ctx.restore();
-      }
-    }
   };
 
   return (
@@ -676,40 +352,31 @@ const PlasticWasteCharts = () => {
           </div>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-1 gap-8 mb-8">
-          <div className="glass-card p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
-            <h3 className="text-center text-lg font-semibold mb-4">Plastic Waste Generated (2013-2023)</h3>
-            <canvas 
-              ref={chart1Ref} 
-              width={1000} 
-              height={500}
-              className="w-full h-auto transition-all duration-300 cursor-pointer"
-              onMouseMove={(e) => handleMouseMove(e, 1)}
-              onMouseLeave={handleMouseLeave}
-            />
+        <div className="mb-8">
+          <div className="flex flex-wrap justify-center gap-4 mb-8">
+            {datasets.map((ds, idx) => (
+              <button
+                key={idx}
+                onClick={() => setActiveDataset(idx)}
+                className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
+                  activeDataset === idx
+                    ? 'bg-primary text-white shadow-lg scale-105'
+                    : 'bg-white/50 text-gray-600 hover:bg-white/80 hover:scale-102'
+                }`}
+              >
+                {ds.name}
+              </button>
+            ))}
           </div>
           
           <div className="glass-card p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
-            <h3 className="text-center text-lg font-semibold mb-4">Waste vs Recycled vs Mismanaged</h3>
             <canvas 
-              ref={chart2Ref} 
-              width={1000} 
+              ref={chartRef} 
+              width={1100} 
               height={500}
               className="w-full h-auto transition-all duration-300 cursor-pointer"
-              onMouseMove={(e) => handleMouseMove(e, 2)}
-              onMouseLeave={handleMouseLeave}
-            />
-          </div>
-          
-          <div className="glass-card p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
-            <h3 className="text-center text-lg font-semibold mb-4">Polymer Demand (Production trend)</h3>
-            <canvas 
-              ref={chart3Ref} 
-              width={1000} 
-              height={500}
-              className="w-full h-auto transition-all duration-300 cursor-pointer"
-              onMouseMove={(e) => handleMouseMove(e, 3)}
-              onMouseLeave={handleMouseLeave}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={() => setHoveredPoint(null)}
             />
           </div>
         </div>

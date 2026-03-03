@@ -110,13 +110,13 @@ export default function Home() {
             
             {/* Desktop Navigation */}
             <div className="hidden md:flex space-x-10">
-              {['home', 'features', 'about', 'plastic-waste', 'services', 'solutions', 'team', 'contact'].map((item) => (
+              {['home', 'features', 'about', 'plastic-waste', 'services', 'solutions', 'apps', 'contact'].map((item) => (
                 <button
                   key={item}
                   onClick={() => scrollToSection(item === 'home' ? 'hero' : item.replace('plastic-waste', 'plastic-waste'))}
                   className="nav-link capitalize"
                 >
-                  {item.replace('plastic-waste', 'Plastic Waste').replace('team', 'Our Team')}
+                  {item.replace('plastic-waste', 'Plastic Waste')}
                 </button>
               ))}
             </div>
@@ -138,13 +138,13 @@ export default function Home() {
           {isMenuOpen && (
             <div className="md:hidden py-4 absolute top-20 left-0 right-0 bg-white shadow-lg">
               <div className="flex flex-col space-y-4 px-4">
-                {['home', 'features', 'about', 'plastic-waste', 'services', 'solutions', 'team', 'contact'].map((item) => (
+                {['home', 'features', 'about', 'plastic-waste', 'services', 'solutions', 'apps', 'contact'].map((item) => (
                   <button
                     key={item}
                     onClick={() => scrollToSection(item === 'home' ? 'hero' : item.replace('plastic-waste', 'plastic-waste'))}
                     className="nav-link text-left capitalize py-2"
                   >
-                    {item.replace('plastic-waste', 'Plastic Waste').replace('team', 'Our Team')}
+                    {item.replace('plastic-waste', 'Plastic Waste')}
                   </button>
                 ))}
               </div>
@@ -519,6 +519,95 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Mobile Apps Section */}
+      <section id="apps" className="py-25 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="section-header">
+            <h2 className="section-title">Download Our Apps</h2>
+            <p className="section-subtitle">
+              Choose the right app for your needs and join the recycling revolution
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="glass-card p-8 hover:shadow-xl transition-all duration-500 hover:-translate-y-2 text-center">
+              <div className="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 mx-auto">
+                <span className="text-4xl">👤</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">User Justto</h3>
+              <p className="text-gray-600 mb-4">
+                The ultimate app for consumers to track recycling, earn rewards, and find nearest collection points.
+              </p>
+              <div className="mb-6">
+                <span className="inline-block bg-primary/10 text-primary px-4 py-1 rounded-full text-sm font-medium">
+                  Target: General Consumers
+                </span>
+              </div>
+              <a 
+                href="https://gallant-wildebeest-887.convex.cloud/api/storage/ba2e5e62-da20-4234-9d65-a85a8c6b669c" 
+                download
+                className="btn-primary inline-flex items-center justify-center gap-2"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Download APK
+              </a>
+            </div>
+            
+            <div className="glass-card p-8 hover:shadow-xl transition-all duration-500 hover:-translate-y-2 text-center">
+              <div className="w-20 h-20 rounded-2xl bg-secondary/10 flex items-center justify-center mb-6 mx-auto">
+                <span className="text-4xl">🏪</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Vendor Justto</h3>
+              <p className="text-gray-600 mb-4">
+                Empowering businesses to manage plastic waste efficiently and meet sustainability goals.
+              </p>
+              <div className="mb-6">
+                <span className="inline-block bg-secondary/10 text-secondary px-4 py-1 rounded-full text-sm font-medium">
+                  Target: Vendors & Businesses
+                </span>
+              </div>
+              <a 
+                href="https://gallant-wildebeest-887.convex.cloud/api/storage/fdf0d5c2-a5b6-436a-ba01-58da03e050d2" 
+                download
+                className="btn-primary inline-flex items-center justify-center gap-2"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Download APK
+              </a>
+            </div>
+            
+            <div className="glass-card p-8 hover:shadow-xl transition-all duration-500 hover:-translate-y-2 text-center">
+              <div className="w-20 h-20 rounded-2xl bg-accent/10 flex items-center justify-center mb-6 mx-auto">
+                <span className="text-4xl">🚚</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Delivery Justto</h3>
+              <p className="text-gray-600 mb-4">
+                Streamlined logistics for waste collection and delivery management.
+              </p>
+              <div className="mb-6">
+                <span className="inline-block bg-accent/10 text-accent px-4 py-1 rounded-full text-sm font-medium">
+                  Target: Delivery Personnel
+                </span>
+              </div>
+              <a 
+                href="https://gallant-wildebeest-887.convex.cloud/api/storage/142678c4-1e63-4b61-986b-6d65a278931c" 
+                download
+                className="btn-primary inline-flex items-center justify-center gap-2"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Download APK
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Impact Section */}
       <section className="py-25 bg-gradient-to-r from-primary to-secondary">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -558,11 +647,12 @@ export default function Home() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               { name: "Mr. Desh Premi", role: "CEO & Founder", desc: "Environmental Scientist with 15+ years of experience", image: "/founder.jpg" },
               { name: "Jadav Madhav", role: "CTO", desc: "Tech innovator specializing in AI and sustainability solutions", image: "/co-founder.jpg" },
-              { name: "Amit Kumar", role: "Head of Operations", desc: "Logistics expert with a passion for environmental impact", image: "/head-of-operations.jpg" }
+              { name: "Amit Kumar", role: "Head of Operations", desc: "Logistics expert with a passion for environmental impact", image: "/head-of-operations.jpg" },
+              { name: "Sunil Kumar (SK) Gautam", role: "Advisor & Mentor", desc: "1989-batch AGMUT cadre IPS officer, former Special CP of Delhi Police", image: "/mentore.jpeg" }
             ].map((member, index) => (
               <div key={index} className="team-member glass-card">
                 <div className="member-image">
