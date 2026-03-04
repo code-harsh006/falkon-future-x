@@ -647,27 +647,32 @@ export default function Home() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
             {[
               { name: "Mr. Desh Premi", role: "CEO & Founder", desc: "Environmental Scientist with 15+ years of experience", image: "/founder.jpg" },
               { name: "Jadav Madhav", role: "CTO", desc: "Tech innovator specializing in AI and sustainability solutions", image: "/co-founder.jpg" },
               { name: "Amit Kumar", role: "Head of Operations", desc: "Logistics expert with a passion for environmental impact", image: "/head-of-operations.jpg" },
-              { name: "Sunil Kumar (SK) Gautam", role: "Advisor & Mentor", desc: "1989-batch AGMUT cadre IPS officer, former Special CP of Delhi Police", image: "/mentore.jpeg" }
+              { name: "Sunil Kumar (SK) Gautam", role: "Advisor & Mentor", desc: "1989-batch AGMUT cadre IPS officer, former Special CP of Delhi Police", image: "/mentore.jpeg" },
+              { name: "Dr. Mansaf Alam", role: "Professor & Mentor", desc: "Professor, Dept. of CS, Jamia Millia Islamia | Young Faculty Research Fellow, MeitY, Govt. of India", image: "/mentor_2.jpeg" }
             ].map((member, index) => (
-              <div key={index} className="team-member glass-card">
-                <div className="member-image">
-                  <Image 
-                    src={member.image} 
-                    alt={member.name}
-                    width={400}
-                    height={300}
-                    className="object-cover"
-                  />
-                </div>
-                <div className="member-info p-6">
-                  <p className="member-role text-sm font-semibold text-primary">{member.role}</p>
-                  <h3 className="text-xl font-semibold mt-1 mb-2">{member.name}</h3>
-                  <p className="text-gray-600">{member.desc}</p>
+              <div key={index} className="group cursor-pointer">
+                <div className="relative overflow-hidden rounded-2xl shadow-lg transition-all duration-500 hover:shadow-2xl hover:-translate-y-2">
+                  <div className="relative aspect-[3/4] overflow-hidden bg-gray-100">
+                    <Image 
+                      src={member.image} 
+                      alt={member.name}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                      <p className="text-white text-sm font-medium">{member.desc}</p>
+                    </div>
+                  </div>
+                  <div className="bg-white p-4 text-center">
+                    <p className="text-sm font-semibold text-primary">{member.role}</p>
+                    <h3 className="text-lg font-bold mt-1 group-hover:text-primary transition-colors">{member.name}</h3>
+                  </div>
                 </div>
               </div>
             ))}
