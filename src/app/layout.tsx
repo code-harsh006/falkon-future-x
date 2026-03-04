@@ -1,40 +1,33 @@
 import type { Metadata } from "next";
-import { Inter, Poppins, Montserrat, Raleway, Roboto, Merriweather, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 import { ClerkProviderWrapper } from "@/lib/clerk-provider";
 
-// Import all required fonts
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const poppins = Poppins({ 
-  subsets: ["latin"], 
-  variable: "--font-poppins",
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"]
-});
-const montserrat = Montserrat({ 
-  subsets: ["latin"], 
-  variable: "--font-montserrat",
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"]
-});
-const raleway = Raleway({ 
-  subsets: ["latin"], 
-  variable: "--font-raleway",
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"]
-});
-const roboto = Roboto({ 
-  subsets: ["latin"], 
-  variable: "--font-roboto",
-  weight: ["100", "300", "400", "500", "700", "900"]
-});
-const merriweather = Merriweather({ 
-  subsets: ["latin"], 
-  variable: "--font-merriweather",
-  weight: ["300", "400", "700", "900"]
-});
-const sourceSans3 = Source_Sans_3({ 
-  subsets: ["latin"], 
-  variable: "--font-source-sans-3",
-  weight: ["200", "300", "400", "600", "700", "900"]
-});
+import "@fontsource/poppins/400.css";
+import "@fontsource/poppins/500.css";
+import "@fontsource/poppins/600.css";
+import "@fontsource/poppins/700.css";
+import "@fontsource/poppins/800.css";
+import "@fontsource/poppins/900.css";
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/500.css";
+import "@fontsource/inter/600.css";
+import "@fontsource/inter/700.css";
+import "@fontsource/montserrat/400.css";
+import "@fontsource/montserrat/500.css";
+import "@fontsource/montserrat/600.css";
+import "@fontsource/montserrat/700.css";
+import "@fontsource/raleway/400.css";
+import "@fontsource/raleway/500.css";
+import "@fontsource/raleway/600.css";
+import "@fontsource/raleway/700.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
+import "@fontsource/merriweather/400.css";
+import "@fontsource/merriweather/700.css";
+import "@fontsource/source-sans-3/400.css";
+import "@fontsource/source-sans-3/600.css";
+import "@fontsource/source-sans-3/700.css";
 
 export const metadata: Metadata = {
   title: "Falkon Future X - Transforming Waste into a Better Future",
@@ -48,8 +41,8 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProviderWrapper>
-      <html lang="en" className={`${inter.variable} ${poppins.variable} ${montserrat.variable} ${raleway.variable} ${roboto.variable} ${merriweather.variable} ${sourceSans3.variable}`}>
-        <body className={inter.className}>{children}</body>
+      <html lang="en">
+        <body className="font-sans">{children}</body>
       </html>
     </ClerkProviderWrapper>
   );

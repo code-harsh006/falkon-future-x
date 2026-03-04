@@ -73,37 +73,37 @@
   
   /* Font assignments */
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-poppins), Arial, sans-serif;
+    font-family: 'Poppins', Arial, sans-serif;
     @apply font-bold leading-tight;
   }
   
   body, p, div, span, li, td, th {
-    font-family: var(--font-inter), Roboto, sans-serif;
+    font-family: 'Inter', Roboto, sans-serif;
     @apply leading-relaxed;
   }
   
   nav, .nav-link, .navigation {
-    font-family: var(--font-montserrat), Helvetica, sans-serif;
+    font-family: 'Montserrat', Helvetica, sans-serif;
     @apply font-medium;
   }
   
   button, .btn, .btn-primary, .btn-outline {
-    font-family: var(--font-raleway), Arial, sans-serif;
+    font-family: 'Raleway', Arial, sans-serif;
     @apply font-semibold;
   }
   
   footer, .footer, small, .copyright, .footer-link {
-    font-family: var(--font-roboto), Verdana, sans-serif;
+    font-family: 'Roboto', Verdana, sans-serif;
     @apply font-normal;
   }
   
   blockquote, .quote, .testimonial, .highlight-text {
-    font-family: var(--font-merriweather), Georgia, serif;
+    font-family: 'Merriweather', Georgia, serif;
     @apply font-normal italic;
   }
   
   .stat-number, .metrics, .dashboard-numbers, .number-display {
-    font-family: var(--font-source-sans-3), Arial, sans-serif;
+    font-family: 'Source Sans 3', Arial, sans-serif;
     @apply font-semibold;
   }
 }
@@ -152,12 +152,12 @@
 
   .section-title {
     @apply text-3xl md:text-4xl font-bold text-gray-900 mb-4;
-    font-family: var(--font-poppins), Arial, sans-serif;
+    font-family: 'Poppins', Arial, sans-serif;
   }
 
   .section-subtitle {
     @apply text-xl text-gray-600 max-w-3xl mx-auto;
-    font-family: var(--font-inter), Roboto, sans-serif;
+    font-family: 'Inter', Roboto, sans-serif;
   }
 
   /* Navigation */
@@ -238,12 +238,12 @@
   
   .footer-logo .logo-text {
     @apply text-2xl font-bold text-gray-900;
-    font-family: var(--font-poppins), Arial, sans-serif;
+    font-family: 'Poppins', Arial, sans-serif;
   }
   
   .footer-links h4 {
     @apply text-lg font-semibold mb-4 text-gray-900;
-    font-family: var(--font-poppins), Arial, sans-serif;
+    font-family: 'Poppins', Arial, sans-serif;
   }
   
   .footer-links ul {
@@ -253,7 +253,7 @@
   .footer-links li a,
   .footer-links li button {
     @apply text-gray-600 hover:text-primary transition-colors duration-300;
-    font-family: var(--font-inter), Roboto, sans-serif;
+    font-family: 'Inter', Roboto, sans-serif;
   }
   
   .social-icons {
