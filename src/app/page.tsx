@@ -718,8 +718,8 @@ export default function Home() {
                   </div>
                   <div>
                     <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">Email Address</h4>
-                    <a href="mailto:info@falkonfuturex.com" className="text-xs text-emerald-600 dark:text-emerald-400 hover:underline block mt-1">
-                      info@falkonfuturex.com
+                    <a href="mailto:falkonfuturex@gmail.com" className="text-xs text-emerald-600 dark:text-emerald-400 hover:underline block mt-1">
+                      falkonfuturex@gmail.com
                     </a>
                   </div>
                 </div>
