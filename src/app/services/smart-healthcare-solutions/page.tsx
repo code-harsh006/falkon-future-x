@@ -1,150 +1,173 @@
 "use client";
 
-import { GlassCard } from "@/components/ui/glass-card";
+import React, { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import { ChevronRight, ArrowLeft, Heart, CheckCircle2, PhoneCall, Sparkles } from "lucide-react";
+import { GlassCard } from "@/components/ui/glass-card";
+import { Button } from "@/components/ui/button";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 export default function SmartHealthcareSolutions() {
+  const [investorMode, setInvestorMode] = useState(false);
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-205 relative overflow-hidden">
+      
+      {/* Background Grids */}
+      <div className="absolute inset-0 grid-bg-overlay opacity-30 pointer-events-none z-0" />
+      <div className="absolute top-0 right-1/4 w-[400px] h-[400px] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none z-0" />
+
+      {/* Navigation */}
+      <Navbar investorMode={investorMode} setInvestorMode={setInvestorMode} />
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-36 pb-20 relative z-10 text-left">
+        
+        {/* Breadcrumbs */}
+        <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-6 font-semibold">
+          <Link href="/" className="hover:text-slate-600 dark:hover:text-white transition-colors">Home</Link>
+          <ChevronRight className="w-3.5 h-3.5" />
+          <Link href="/services" className="hover:text-slate-600 dark:hover:text-white transition-colors">Services</Link>
+          <ChevronRight className="w-3.5 h-3.5" />
+          <span className="text-emerald-500">Smart Healthcare Solutions</span>
+        </div>
+
+        {/* Back Link */}
         <div className="mb-8">
           <Link 
             href="/services" 
-            className="inline-flex items-center text-primary hover:underline"
+            className="inline-flex items-center text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 hover:underline gap-1.5"
           >
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-            </svg>
+            <ArrowLeft className="w-4 h-4" />
             Back to Services
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2">
-            <GlassCard className="p-8">
-              <div className="flex items-center mb-6">
-                <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-3xl mr-4">
-                  🏥
+        {/* Grid Columns */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          {/* Main Info */}
+          <div className="lg:col-span-8 space-y-6">
+            <GlassCard className="bg-white/80 dark:bg-slate-900/80 border-slate-200/50 dark:border-slate-800/50 rounded-3xl p-8 shadow-sm">
+              <div className="flex items-center gap-4 mb-6 pb-6 border-b border-slate-100 dark:border-slate-850">
+                <div className="w-14 h-14 rounded-2xl bg-rose-500/10 flex items-center justify-center text-3xl text-rose-500">
+                  <Heart className="w-8 h-8" />
                 </div>
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900">Smart Healthcare Solutions</h1>
+                <div>
+                  <span className="text-[10px] text-slate-455 uppercase font-bold tracking-widest block">TELEMEDICINE & CLINICAL DATA</span>
+                  <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white">
+                    Smart Healthcare Solutions
+                  </h1>
+                </div>
               </div>
-              
-              <p className="text-xl text-gray-600 mb-8">
-                Innovative healthcare solutions focused on quality and customer satisfaction.
+
+              <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-6 font-medium">
+                Encrypted Electronic Health Record (EHR) platforms, secure telemedicine portals, and remote sensor integration improving patient outcome metrics.
               </p>
-              
-              <div className="prose max-w-none">
-                <p className="text-gray-700 mb-6">
-                  Our Smart Healthcare Solutions leverage cutting-edge technology to improve patient outcomes 
-                  and operational efficiency. We provide telemedicine platforms, electronic health records systems, 
-                  wearable health monitoring devices, and AI-powered diagnostic tools.
+
+              <div className="prose prose-slate dark:prose-invert max-w-none text-xs text-slate-500 dark:text-slate-400 space-y-4">
+                <p>
+                  Our Smart Healthcare Solutions division designs digital infrastructure for hospitals, clinical research pipelines, and remote care programs. We specialized in creating secure portals that meet privacy compliance standards.
                 </p>
-                
-                <p className="text-gray-700 mb-6">
-                  These solutions enable healthcare providers to deliver personalized care, reduce costs, 
-                  and improve accessibility while maintaining the highest standards of data security and 
-                  patient privacy. Our integrated approach connects patients, providers, and health data 
-                  in a seamless ecosystem that enhances the overall healthcare experience.
+                <p>
+                  We build tools facilitating remote diagnostics, virtual consultations, and automatic scheduling pipelines. Security is central to our healthcare offerings; all data transactions utilize end-to-end encryption protocols.
                 </p>
-                
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Key Features</h2>
-                <ul className="space-y-3 mb-8">
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-2">✓</span>
-                    <span>Telemedicine and remote consultation platforms</span>
+
+                <h3 className="text-sm font-bold text-slate-850 dark:text-white pt-4">Deliverable Capabilities</h3>
+                <ul className="space-y-2.5">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                    <span>Telehealth software with encrypted video and chat channels.</span>
                   </li>
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-2">✓</span>
-                    <span>Electronic health records (EHR) management</span>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                    <span>Secure cloud electronic health records complying with data rules.</span>
                   </li>
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-2">✓</span>
-                    <span>Wearable health monitoring and IoT integration</span>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                    <span>Integration with consumer wearable devices for automated diagnostics.</span>
                   </li>
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-2">✓</span>
-                    <span>AI-powered diagnostic assistance tools</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-2">✓</span>
-                    <span>Patient engagement and appointment scheduling</span>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                    <span>AI-assisted administrative scheduling and staff dispatch nodes.</span>
                   </li>
                 </ul>
-                
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Technology Benefits</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                  <div className="bg-blue-50 p-6 rounded-xl">
-                    <h3 className="font-bold text-lg text-gray-900 mb-2">Improved Access</h3>
-                    <p className="text-gray-700">
-                      Remote consultations and digital health tools increase access to care for underserved populations.
-                    </p>
+
+                <h3 className="text-sm font-bold text-slate-850 dark:text-white pt-4">Operational Pillars</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="bg-slate-100/50 dark:bg-slate-950/40 border border-slate-200 dark:border-slate-850 p-4 rounded-xl">
+                    <h4 className="font-bold text-slate-900 dark:text-white text-xs mb-1">Encrypted Pipelines</h4>
+                    <p className="text-[11px] leading-relaxed">Secure data databases protecting patient information from breach hazards.</p>
                   </div>
-                  <div className="bg-green-50 p-6 rounded-xl">
-                    <h3 className="font-bold text-lg text-gray-900 mb-2">Enhanced Diagnostics</h3>
-                    <p className="text-gray-700">
-                      AI-assisted tools help identify health issues earlier and with greater accuracy.
-                    </p>
-                  </div>
-                  <div className="bg-purple-50 p-6 rounded-xl">
-                    <h3 className="font-bold text-lg text-gray-900 mb-2">Operational Efficiency</h3>
-                    <p className="text-gray-700">
-                      Automated workflows and digital records reduce administrative burden on healthcare staff.
-                    </p>
-                  </div>
-                  <div className="bg-yellow-50 p-6 rounded-xl">
-                    <h3 className="font-bold text-lg text-gray-900 mb-2">Patient Engagement</h3>
-                    <p className="text-gray-700">
-                      Personalized health insights and easy access to medical records improve patient participation.
-                    </p>
+                  <div className="bg-slate-100/50 dark:bg-slate-950/40 border border-slate-200 dark:border-slate-850 p-4 rounded-xl">
+                    <h4 className="font-bold text-slate-900 dark:text-white text-xs mb-1">Clinic Portals</h4>
+                    <p className="text-[11px] leading-relaxed">Tailored interfaces for doctors and scheduling teams optimizing clinical operations.</p>
                   </div>
                 </div>
-                
-                <div className="bg-primary/5 p-6 rounded-xl border border-primary/10">
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">Transform Healthcare Delivery</h3>
-                  <p className="text-gray-700 mb-4">
-                    Contact us today to learn how our Smart Healthcare Solutions can improve patient outcomes 
-                    while reducing costs and increasing operational efficiency.
-                  </p>
-                  <Link href="/#contact" className="btn-primary inline-block">
-                    Schedule a Demo
-                  </Link>
-                </div>
+
               </div>
             </GlassCard>
           </div>
-          
-          <div>
-            <GlassCard className="p-6 mb-8">
-              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-3xl mb-4">
-                🏥
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Healthcare Innovation</h3>
-              <p className="text-gray-600">
-                Advanced technology solutions for modern healthcare challenges and patient care.
-              </p>
-            </GlassCard>
+
+          {/* Sidebar */}
+          <div className="lg:col-span-4 space-y-6">
             
-            <GlassCard className="p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Related Services</h3>
-              <ul className="space-y-3">
+            {/* Quick Stats Card */}
+            <GlassCard className="bg-white/80 dark:bg-slate-900/80 border-slate-200/50 dark:border-slate-800/50 p-6 rounded-3xl shadow-sm text-center">
+              <div className="w-10 h-10 rounded-xl bg-rose-500/10 flex items-center justify-center text-rose-500 mx-auto mb-4">
+                <Sparkles className="w-5 h-5" />
+              </div>
+              <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-1">Patient Satisfaction</h3>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
+                Clinics report up to a 30% reduction in patient check-in bottlenecks using our telemetry modules.
+              </p>
+              <span className="inline-block px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                HIPAA Compliant
+              </span>
+            </GlassCard>
+
+            {/* Related Services */}
+            <GlassCard className="bg-white/80 dark:bg-slate-900/80 border-slate-200/50 dark:border-slate-800/50 p-6 rounded-3xl shadow-sm">
+              <h3 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-4 pb-2 border-b border-slate-100 dark:border-slate-850">
+                Related Ventures
+              </h3>
+              <ul className="space-y-3 text-xs">
                 <li>
-                  <Link href="/services/cyber-awareness-guidance" className="flex items-center text-gray-600 hover:text-primary">
-                    <span className="mr-2">→</span>
-                    Healthcare Data Security
+                  <Link href="/services/cyber-awareness-guidance" className="flex items-center text-slate-500 hover:text-emerald-500 transition-colors">
+                    <span className="mr-2">→</span> Cyber Security Consultancy
                   </Link>
                 </li>
                 <li>
-                  <Link href="/services/e-commerce" className="flex items-center text-gray-600 hover:text-primary">
-                    <span className="mr-2">→</span>
-                    Medical Supply E-Commerce
+                  <Link href="/services/water-bound-digises-solution" className="flex items-center text-slate-500 hover:text-emerald-500 transition-colors">
+                    <span className="mr-2">→</span> Waterborne Disease Solutions
                   </Link>
                 </li>
               </ul>
             </GlassCard>
+
+            {/* Simple CTA form */}
+            <GlassCard className="bg-slate-900 border border-slate-800 p-6 rounded-3xl text-white">
+              <h3 className="text-sm font-bold flex items-center gap-1.5 mb-2">
+                <PhoneCall className="w-4 h-4 text-emerald-500" />
+                Intake Assessment
+              </h3>
+              <p className="text-[10px] text-slate-400 leading-relaxed mb-4">
+                Deploy smart diagnostics or encrypted database tools for your clinical branch.
+              </p>
+              <Link href="/#contact" className="w-full btn-premium-primary justify-center text-xs py-2">
+                Contact Specialist
+              </Link>
+            </GlassCard>
+
           </div>
+
         </div>
-      </div>
+
+      </main>
+
+      {/* Global Footer */}
+      <Footer />
+
     </div>
   );
 }
