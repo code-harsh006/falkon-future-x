@@ -10,7 +10,6 @@ import {
   MapPin, 
   Activity, 
   ShieldAlert,
-  Download,
   Phone,
   Mail,
   Globe,
@@ -635,72 +634,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Justto App Suite downloads */}
-      <section id="apps" className="section-py relative z-10 bg-slate-100/50 dark:bg-slate-900/10 border-t border-slate-200/60 dark:border-slate-850">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest block mb-2">Ecosystem Mobile Apps</span>
-            <h2 className="section-title">The Justto Mobile Suite</h2>
-            <p className="section-subtitle mt-2 text-slate-500">
-              Download the specialized mobile application built for your node in the Falkan circular recycling loop.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              {
-                icon: "👤",
-                title: "User Justto APK",
-                desc: "For general households to schedule pickups, track carbon offset balances, and redeem ESG utility tokens.",
-                badge: "Target: Households",
-                color: "border-emerald-500/30 text-emerald-500 bg-emerald-500/5",
-                url: "https://gallant-wildebeest-887.convex.cloud/api/storage/fdf0d5c2-a5b6-436a-ba01-58da03e050d2"
-              },
-              {
-                icon: "🏪",
-                title: "Vendor Justto APK",
-                desc: "For businesses and retail shops to log commercial packaging collections and track brand compliance indices.",
-                badge: "Target: Retailers",
-                color: "border-blue-500/30 text-blue-500 bg-blue-500/5",
-                url: "https://gallant-wildebeest-887.convex.cloud/api/storage/142678c4-1e63-4b61-986b-6d65a278931c"
-              },
-              {
-                icon: "🚚",
-                title: "Delivery Justto APK",
-                desc: "For courier agents and logistics personnel to verify sorting, scan bags, and validate drop-offs at hubs.",
-                badge: "Target: Logistics Personnel",
-                color: "border-amber-500/30 text-amber-500 bg-amber-500/5",
-                url: "https://gallant-wildebeest-887.convex.cloud/api/storage/ba2e5e62-da20-4234-9d65-a85a8c6b669c"
-              }
-            ].map((app, i) => (
-              <div key={i} className="glass-card-premium p-6 flex flex-col justify-between items-center text-center h-80 border-slate-200/50 dark:border-slate-800/50 shadow-sm">
-                <div className="w-14 h-14 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-2xl mb-4 shadow-sm">
-                  {app.icon}
-                </div>
-
-                <div className="space-y-2">
-                  <span className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold border ${app.color}`}>
-                    {app.badge}
-                  </span>
-                  <h3 className="text-base font-bold text-slate-900 dark:text-white">{app.title}</h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed max-w-xs">{app.desc}</p>
-                </div>
-
-                <a
-                  href={app.url}
-                  download
-                  className="w-full btn-premium-primary text-xs py-2 px-4 flex items-center justify-center gap-1.5"
-                >
-                  <Download className="w-3.5 h-3.5" />
-                  Download APK Payload
-                </a>
-              </div>
-            ))}
-          </div>
-
-        </div>
-      </section>
 
       {/* Advisory & Executive Team Panel */}
       <section id="team" className="section-py relative z-10 border-t border-slate-200/60 dark:border-slate-850">

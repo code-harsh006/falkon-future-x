@@ -51,7 +51,6 @@ const Navbar = ({ investorMode, setInvestorMode }: NavbarProps) => {
     { label: 'Analytics', id: 'plastic-waste' },
     { label: 'Services', id: 'services' },
     { label: 'Solutions', id: 'solutions' },
-    { label: 'Apps', id: 'apps' },
     { label: 'Contact', id: 'contact' },
   ];
 

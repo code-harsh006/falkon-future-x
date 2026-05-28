@@ -68,7 +68,7 @@ const Footer = () => {
                 { label: 'EPR Compliance SaaS', href: '/services/smart-waste-management-system' },
                 { label: 'IoT Smart Bins', href: '/services/smart-waste-management-system' },
                 { label: 'Blockchain Offsets', href: '/#solutions' },
-                { label: 'Justto Delivery Integrations', href: '/#apps' },
+                { label: 'Justto Logistics Moat', href: '/#solutions' },
                 { label: 'Water Resource Audits', href: '/services/water-bound-digises-solution' }
               ].map((item) => (
                 <li key={item.label}>
