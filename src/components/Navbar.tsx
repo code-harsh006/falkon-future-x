@@ -117,9 +117,9 @@ const Navbar = ({ investorMode, setInvestorMode }: NavbarProps) => {
               <Button
                 size="sm"
                 className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold flex items-center gap-1 shadow-md shadow-emerald-600/10 rounded-xl"
-                onClick={() => handleNavClick('contact')}
+                onClick={() => router.push('/platform')}
               >
-                Get Started
+                Launch Platform
                 <ArrowRight className="w-3.5 h-3.5" />
               </Button>
             </div>
@@ -131,7 +131,7 @@ const Navbar = ({ investorMode, setInvestorMode }: NavbarProps) => {
                 className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[10px] font-semibold tracking-wide transition-all ${
                   investorMode
                     ? 'bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500'
-                    : 'bg-slate-100 dark:bg-slate-900 text-slate-500 border-slate-200 dark:border-slate-800'
+                    : 'bg-slate-100 dark:bg-slate-900 text-slate-500 border-slate-200 dark:border-slate-850'
                 }`}
               >
                 <Shield className="w-3 h-3" />
@@ -140,7 +140,7 @@ const Navbar = ({ investorMode, setInvestorMode }: NavbarProps) => {
 
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="p-2 rounded-lg text-slate-600 dark:text-slate-350 hover:bg-slate-100 dark:hover:bg-slate-800"
                 aria-label="Toggle menu"
               >
                 {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -173,9 +173,9 @@ const Navbar = ({ investorMode, setInvestorMode }: NavbarProps) => {
                 </Button>
                 <Button
                   className="w-full justify-center bg-emerald-600 hover:bg-emerald-500 text-white"
-                  onClick={() => handleNavClick('contact')}
+                  onClick={() => router.push('/platform')}
                 >
-                  Get Started
+                  Launch Platform
                 </Button>
               </div>
             </div>
