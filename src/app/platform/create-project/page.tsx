@@ -52,7 +52,7 @@ export default function CreateProjectWizard() {
     let baseline = 0;
     let project = 0;
     let credits = 0;
-    let unit = 'tCO2e';
+    const unit = 'tCO2e';
 
     if (!projectType) return { baseline, project, credits, revenue: 0 };
 
