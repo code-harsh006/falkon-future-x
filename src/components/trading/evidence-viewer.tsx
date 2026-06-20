@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { 
   MapPin, 
   FileText, 
-  Image, 
+  Image as ImageIcon, 
   CheckCircle, 
   XCircle, 
   MessageSquare,
@@ -93,7 +93,7 @@ export function EvidenceViewer({
               : "text-ink-500 hover:text-ink-700"
           )}
         >
-          <Image className="w-4 h-4 inline-block mr-1" />
+          <ImageIcon className="w-4 h-4 inline-block mr-1" />
           Photos ({photos.length})
         </button>
         <button

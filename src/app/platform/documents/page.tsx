@@ -12,7 +12,7 @@ import {
   Trash2,
   X,
   ShieldCheck,
-  Image,
+  Image as ImageIcon,
   FileSpreadsheet,
   Archive,
   File,
@@ -30,7 +30,7 @@ const DOC_TYPES = [
 ] as const;
 
 function getFileIcon(mimeType: string) {
-  if (mimeType.startsWith("image/")) return <Image className="w-5 h-5 text-blue-500" />;
+  if (mimeType.startsWith("image/")) return <ImageIcon className="w-5 h-5 text-blue-500" />;
   if (mimeType.includes("pdf")) return <FileText className="w-5 h-5 text-red-500" />;
   if (mimeType.includes("spreadsheet") || mimeType.includes("excel") || mimeType.includes("xlsx"))
     return <FileSpreadsheet className="w-5 h-5 text-green-500" />;

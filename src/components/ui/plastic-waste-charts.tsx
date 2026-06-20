@@ -1,8 +1,40 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { GlassCard } from './glass-card';
 import { TrendingUp, BarChart3, PieChart, Layers, Info } from 'lucide-react';
+
+const wasteData = [
+  { year: '2013-14', waste: 2.9, recycled: 0.9, mismanaged: 2.0 },
+  { year: '2014-15', waste: 3.0, recycled: 1.0, mismanaged: 2.0 },
+  { year: '2015-16', waste: 3.1, recycled: 1.1, mismanaged: 2.0 },
+  { year: '2016-17', waste: 3.2, recycled: 1.2, mismanaged: 2.0 },
+  { year: '2017-18', waste: 3.3, recycled: 1.3, mismanaged: 2.0 },
+  { year: '2018-19', waste: 3.36, recycled: 1.35, mismanaged: 2.0 },
+  { year: '2019-20', waste: 3.47, recycled: 1.4, mismanaged: 2.07 },
+  { year: '2020-21', waste: 4.13, recycled: 1.5, mismanaged: 2.63 },
+  { year: '2021-22', waste: 3.90, recycled: 1.6, mismanaged: 2.30 },
+  { year: '2022-23', waste: 4.14, recycled: 1.64, mismanaged: 2.50 }
+];
+
+const productionData = [
+  { year: '2013-14', demand: 10.0 },
+  { year: '2014-15', demand: 11.0 },
+  { year: '2015-16', demand: 12.0 },
+  { year: '2016-17', demand: 13.0 },
+  { year: '2017-18', demand: 14.0 },
+  { year: '2018-19', demand: 15.0 },
+  { year: '2019-20', demand: 15.5 },
+  { year: '2020-21', demand: 14.2 },
+  { year: '2021-22', demand: 16.0 },
+  { year: '2022-23', demand: 17.2 }
+];
+
+const datasets = [
+  { name: 'Plastic Waste Generated', data: wasteData, key: 'waste', color: '#10b981', unit: 'Million Tonnes' },
+  { name: 'Waste vs Recycled vs Mismanaged', data: wasteData, key: 'all', unit: 'Million Tonnes' },
+  { name: 'Polymer Demand Trend', data: productionData, key: 'demand', color: '#8b5cf6', unit: 'Million Tonnes' }
+];
 
 const PlasticWasteCharts = () => {
   const chartRef = useRef<HTMLCanvasElement>(null);
@@ -10,38 +42,6 @@ const PlasticWasteCharts = () => {
   const [animationProgress, setAnimationProgress] = useState(0);
   const [activeDataset, setActiveDataset] = useState(0);
   const [hoveredPoint, setHoveredPoint] = useState<{x: number, y: number, value: number, label: string} | null>(null);
-
-  const wasteData = [
-    { year: '2013-14', waste: 2.9, recycled: 0.9, mismanaged: 2.0 },
-    { year: '2014-15', waste: 3.0, recycled: 1.0, mismanaged: 2.0 },
-    { year: '2015-16', waste: 3.1, recycled: 1.1, mismanaged: 2.0 },
-    { year: '2016-17', waste: 3.2, recycled: 1.2, mismanaged: 2.0 },
-    { year: '2017-18', waste: 3.3, recycled: 1.3, mismanaged: 2.0 },
-    { year: '2018-19', waste: 3.36, recycled: 1.35, mismanaged: 2.0 },
-    { year: '2019-20', waste: 3.47, recycled: 1.4, mismanaged: 2.07 },
-    { year: '2020-21', waste: 4.13, recycled: 1.5, mismanaged: 2.63 },
-    { year: '2021-22', waste: 3.90, recycled: 1.6, mismanaged: 2.30 },
-    { year: '2022-23', waste: 4.14, recycled: 1.64, mismanaged: 2.50 }
-  ];
-
-  const productionData = [
-    { year: '2013-14', demand: 10.0 },
-    { year: '2014-15', demand: 11.0 },
-    { year: '2015-16', demand: 12.0 },
-    { year: '2016-17', demand: 13.0 },
-    { year: '2017-18', demand: 14.0 },
-    { year: '2018-19', demand: 15.0 },
-    { year: '2019-20', demand: 15.5 },
-    { year: '2020-21', demand: 14.2 },
-    { year: '2021-22', demand: 16.0 },
-    { year: '2022-23', demand: 17.2 }
-  ];
-
-  const datasets = [
-    { name: 'Plastic Waste Generated', data: wasteData, key: 'waste', color: '#10b981', unit: 'Million Tonnes' },
-    { name: 'Waste vs Recycled vs Mismanaged', data: wasteData, key: 'all', unit: 'Million Tonnes' },
-    { name: 'Polymer Demand Trend', data: productionData, key: 'demand', color: '#8b5cf6', unit: 'Million Tonnes' }
-  ];
 
   useEffect(() => {
     const checkDarkMode = () => {
@@ -98,7 +98,7 @@ const PlasticWasteCharts = () => {
     ctx.stroke();
   };
 
-  const drawCharts = () => {
+  const drawCharts = useCallback(() => {
     if (!chartRef.current) return;
     const canvas = chartRef.current;
     const ctx = canvas.getContext('2d');
@@ -286,11 +286,11 @@ const PlasticWasteCharts = () => {
     ctx.textAlign = 'left';
     ctx.textBaseline = 'top';
     ctx.fillText(currentDataset.name, paddingLeft, 15);
-  };
+  }, [darkMode, animationProgress, activeDataset, hoveredPoint]);
 
   useEffect(() => {
     drawCharts();
-  }, [darkMode, animationProgress, activeDataset, hoveredPoint]);
+  }, [drawCharts]);
 
   const handleMouseMove = (event: React.MouseEvent<HTMLCanvasElement>) => {
     const canvas = event.currentTarget;
