@@ -1,91 +1,124 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { usePlatform } from '@/lib/platform-context';
-import { 
-  Bell, 
-  CheckCircle2, 
-  AlertTriangle, 
-  Info, 
-  Cpu, 
-  Trash2 
-} from 'lucide-react';
+import React from "react";
+import { useQuery, useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { usePlatform } from "@/lib/platform-context";
+import {
+  Bell,
+  CheckCircle2,
+  AlertTriangle,
+  Info,
+  Trash2,
+  CheckCheck,
+} from "lucide-react";
 
 export default function PlatformNotifications() {
-  const { role } = usePlatform();
+  const { userId, hasConvexUser } = usePlatform();
 
-  // Mock notifications list
-  const notificationLogs = [
-    { type: 'success', title: 'Carbon Offset Credits Retired', desc: '45.00 tCO2e offsets retired successfully for Nestle India compliance.', date: 'June 03, 2026 - 19:42', category: 'Registry' },
-    { type: 'alert', title: 'New Project Pending Verification', desc: 'Vrindavan Agroforest Plantation submitted by farmer Desh Premi is awaiting audit signature.', date: 'June 03, 2026 - 17:15', category: 'Verification' },
-    { type: 'info', title: 'Smart Node Telemetry Connected', desc: 'NB-IoT Smart Waste bins reporting online from Mumbai Okhla sort centers.', date: 'June 02, 2026 - 11:30', category: 'IoT Network' },
-    { type: 'success', title: 'EPR Compliance Certificate Signed', desc: 'CPCB Solid Waste Management Certificate generated for PepsiCo India.', date: 'June 01, 2026 - 09:20', category: 'EPR Compliance' },
-    { type: 'system', title: 'Consensus Block Inscribed', desc: 'Registry Transaction 0xf12c...881a logged on Polygon Block #829104.', date: 'May 30, 2026 - 16:45', category: 'Consensus' }
-  ];
+  const notifications = useQuery(
+    api.notifications.getByUser,
+    hasConvexUser && userId ? { userId: userId as any } : "skip"
+  );
+
+  const markRead = useMutation(api.notifications.markAsRead);
+  const markAllRead = useMutation(api.notifications.markAllAsRead);
+
+  const unreadCount = (notifications || []).filter((n) => !n.read).length;
+
+  const handleMarkAllRead = async () => {
+    if (!userId) return;
+    await markAllRead({ userId: userId as any });
+  };
+
+  const handleMarkRead = async (notifId: string) => {
+    await markRead({ notificationId: notifId as any });
+  };
+
+  const getIcon = (type: string) => {
+    switch (type) {
+      case "verification_result":
+        return <CheckCircle2 className="w-5 h-5 text-up" />;
+      case "order_filled":
+        return <CheckCircle2 className="w-5 h-5 text-brand-500" />;
+      case "retirement_complete":
+        return <CheckCircle2 className="w-5 h-5 text-brand-500" />;
+      case "project_created":
+        return <Info className="w-5 h-5 text-info" />;
+      case "document_uploaded":
+        return <Info className="w-5 h-5 text-info" />;
+      default:
+        return <Bell className="w-5 h-5 text-ink-500" />;
+    }
+  };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8 text-left animate-fade-in">
-      
-      {/* Page Header */}
-      <div>
-        <span className="text-xs text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-widest font-mono">System Logs</span>
-        <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white mt-1">Notifications</h1>
-        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-          Monitor real-time system logs, smart contract confirmations, and project audit updates.
-        </p>
-      </div>
-
-      {/* Notifications list */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-850 rounded-3xl p-6 space-y-4">
-        {notificationLogs.map((log, idx) => (
-          <div key={idx} className="flex gap-4 p-4 bg-slate-50 dark:bg-slate-950/30 border border-slate-150 dark:border-slate-850 hover:border-emerald-500/20 rounded-2xl text-xs hover:bg-slate-100/30 transition-all">
-            
-            {/* Type Icon */}
-            <div className="shrink-0 mt-0.5">
-              {log.type === 'success' && (
-                <div className="p-2.5 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 rounded-xl">
-                  <CheckCircle2 className="w-5 h-5" />
-                </div>
-              )}
-              {log.type === 'alert' && (
-                <div className="p-2.5 bg-amber-500/10 border border-amber-500/20 text-amber-500 rounded-xl">
-                  <AlertTriangle className="w-5 h-5" />
-                </div>
-              )}
-              {log.type === 'info' && (
-                <div className="p-2.5 bg-blue-500/10 border border-blue-500/20 text-blue-500 rounded-xl">
-                  <Info className="w-5 h-5" />
-                </div>
-              )}
-              {log.type === 'system' && (
-                <div className="p-2.5 bg-indigo-500/10 border border-indigo-500/20 text-indigo-500 rounded-xl">
-                  <Cpu className="w-5 h-5" />
-                </div>
-              )}
-            </div>
-
-            {/* Description details */}
-            <div className="flex-1 space-y-1">
-              <div className="flex justify-between items-start flex-wrap gap-2">
-                <span className="font-extrabold text-slate-900 dark:text-white text-sm">{log.title}</span>
-                <span className="text-[9px] font-mono text-slate-400 font-semibold">{log.date}</span>
-              </div>
-              <p className="text-slate-500 dark:text-slate-400 leading-relaxed">
-                {log.desc}
-              </p>
-              
-              <div className="flex items-center gap-1.5 pt-2 text-[10px]">
-                <span className="text-slate-400">Category:</span>
-                <span className="px-2 py-0.5 bg-slate-200/50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-500 rounded font-bold uppercase tracking-wider font-mono">
-                  {log.category}
-                </span>
-              </div>
-            </div>
-
+    <div className="space-y-6">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-xs text-brand-500 font-bold uppercase tracking-widest font-mono">
+              Alerts
+            </span>
+            <Bell className="w-4 h-4 text-brand-500" />
           </div>
-        ))}
+          <h1 className="text-2xl font-bold text-ink-900">Notifications</h1>
+          <p className="text-sm text-ink-500 mt-1">
+            {unreadCount > 0
+              ? `You have ${unreadCount} unread notification${unreadCount > 1 ? "s" : ""}`
+              : "All caught up!"}
+          </p>
+        </div>
+        {unreadCount > 0 && (
+          <button
+            onClick={handleMarkAllRead}
+            className="px-4 py-2 bg-brand-50 text-brand-500 border border-brand-500/20 rounded-lg text-sm font-medium hover:bg-brand-100 transition-colors flex items-center gap-2"
+          >
+            <CheckCheck className="w-4 h-4" />
+            Mark all as read
+          </button>
+        )}
       </div>
 
+      {!notifications || notifications.length === 0 ? (
+        <div className="bg-white border border-ink-300 rounded-lg p-12 text-center">
+          <Bell className="w-12 h-12 text-ink-300 mx-auto mb-3" />
+          <p className="text-sm font-semibold text-ink-900">No notifications yet</p>
+          <p className="text-xs text-ink-500 mt-1">
+            Notifications will appear here when activity happens
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {notifications.map((notif) => (
+            <div
+              key={notif._id}
+              onClick={() => !notif.read && handleMarkRead(notif._id)}
+              className={`bg-white border rounded-lg p-4 flex items-start gap-4 transition-colors cursor-pointer ${
+                notif.read
+                  ? "border-ink-300"
+                  : "border-brand-500/30 bg-brand-50/30 hover:bg-brand-50/50"
+              }`}
+            >
+              <div className="mt-0.5">{getIcon(notif.type)}</div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <p className="text-sm font-semibold text-ink-900">
+                    {notif.title}
+                  </p>
+                  {!notif.read && (
+                    <span className="w-2 h-2 rounded-full bg-brand-500 flex-shrink-0" />
+                  )}
+                </div>
+                <p className="text-sm text-ink-500 mt-0.5">{notif.message}</p>
+                <p className="text-xs text-ink-500 mt-1">
+                  {new Date(notif.createdAt).toLocaleString()}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

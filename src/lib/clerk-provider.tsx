@@ -1,24 +1,22 @@
-'use client';
+"use client";
 
-import { ClerkProvider, useAuth } from '@clerk/nextjs';
-import { ConvexProviderWithClerk } from 'convex/react-clerk';
-import { ReactNode } from 'react';
-import { ConvexReactClient } from 'convex/react';
+import { ClerkProvider, useAuth } from "@clerk/nextjs";
+import { ConvexProviderWithClerk } from "convex/react-clerk";
+import { ConvexProvider, ConvexReactClient } from "convex/react";
+import { ReactNode, useMemo } from "react";
 
 interface ClerkProviderWrapperProps {
   children: ReactNode;
 }
 
-function ConvexProviderWithClerkWrapper({ children }: { children: ReactNode }) {
-  const { getToken } = useAuth();
+function ConvexWithClerk({ children }: { children: ReactNode }) {
   const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL;
-  
-  if (!convexUrl) {
-    console.warn("Convex URL not found. Running without Convex.");
-    return <>{children}</>;
-  }
+  const convex = useMemo(() => {
+    if (!convexUrl) return null;
+    return new ConvexReactClient(convexUrl);
+  }, [convexUrl]);
 
-  const convex = new ConvexReactClient(convexUrl);
+  if (!convex) return <>{children}</>;
 
   return (
     <ConvexProviderWithClerk useAuth={useAuth} client={convex}>
@@ -27,35 +25,44 @@ function ConvexProviderWithClerkWrapper({ children }: { children: ReactNode }) {
   );
 }
 
+function ConvexOnly({ children }: { children: ReactNode }) {
+  const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL;
+  const convex = useMemo(() => {
+    if (!convexUrl) return null;
+    return new ConvexReactClient(convexUrl);
+  }, [convexUrl]);
+
+  if (!convex) return <>{children}</>;
+
+  return <ConvexProvider client={convex}>{children}</ConvexProvider>;
+}
+
 export function ClerkProviderWrapper({ children }: ClerkProviderWrapperProps) {
-  // Check if we have the required environment variables
-  const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
-  
-  // If we don't have the publishable key or it's still the placeholder value, 
-  // render children with just Convex (no Clerk)
-  if (!publishableKey || publishableKey === 'pk_test_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX') {
-    console.warn('Clerk publishable key not found or is still the placeholder value. Running without authentication.');
-    return <>{children}</>;
+  const pk = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
+  const hasClerk =
+    pk &&
+    pk.startsWith("pk_") &&
+    pk !== "pk_test_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+
+  if (hasClerk) {
+    return (
+      <ClerkProvider
+        publishableKey={pk}
+        appearance={{
+          variables: {
+            colorPrimary: "#1C9D4B",
+            borderRadius: "0.5rem",
+          },
+          elements: {
+            formButtonPrimary: "bg-brand-500 hover:bg-brand-600",
+          },
+        }}
+      >
+        <ConvexWithClerk>{children}</ConvexWithClerk>
+      </ClerkProvider>
+    );
   }
 
-  // Validate the publishable key format
-  if (!publishableKey.startsWith('pk_')) {
-    console.warn('Invalid Clerk publishable key format. Running without authentication.');
-    return <>{children}</>;
-  }
-
-  return (
-    <ClerkProvider
-      publishableKey={publishableKey}
-      appearance={{
-        variables: {
-          colorPrimary: '#10b981', // Green from the original site
-        },
-      }}
-    >
-      <ConvexProviderWithClerkWrapper>
-        {children}
-      </ConvexProviderWithClerkWrapper>
-    </ClerkProvider>
-  );
+  return <ConvexOnly>{children}</ConvexOnly>;
 }

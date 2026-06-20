@@ -20,15 +20,15 @@ module.exports = {
           foreground: 'hsl(var(--popover-foreground))'
         },
         primary: {
-          DEFAULT: 'hsl(160, 73%, 42%)', // #10b981 - Green from static site
+          DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))'
         },
         secondary: {
-          DEFAULT: 'hsl(217, 91%, 60%)', // #3b82f6 - Blue from static site
+          DEFAULT: 'hsl(var(--secondary))',
           foreground: 'hsl(var(--secondary-foreground))'
         },
         accent: {
-          DEFAULT: 'hsl(37, 90%, 63%)', // #f59e0b - Orange from static site
+          DEFAULT: 'hsl(var(--accent))',
           foreground: 'hsl(var(--accent-foreground))'
         },
         muted: {
@@ -41,12 +41,45 @@ module.exports = {
         },
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
-        ring: 'hsl(160, 73%, 42%)', // #10b981 - Green from static site
-        'bg-secondary': 'hsl(210, 20%, 96%)', // #f9fafb
-        'bg-dark': 'hsl(222, 22%, 10%)', // #111827
-        'text-primary': 'hsl(222, 22%, 16%)', // #1f2937
-        'text-secondary': 'hsl(215, 14%, 34%)', // #6b7280
-        'text-light': 'hsl(213, 12%, 50%)', // #9ca3af
+        ring: 'hsl(var(--ring))',
+
+        // Zerodha-grade design tokens
+        ink: {
+          900: '#1A1E22',   // primary text
+          700: '#41454B',   // secondary text
+          500: '#787B80',   // muted / labels
+          300: '#C9CBCE',   // borders
+          100: '#F1F3F4',   // surface alt / table stripe
+          0:   '#FFFFFF',
+        },
+        brand: {
+          50:  '#EAF7EE',
+          100: '#CDEED7',
+          400: '#3FB95B',
+          500: '#1C9D4B',   // primary buttons, active nav, "buy"
+          600: '#15803D',
+          900: '#0B4023',
+        },
+        up: {
+          DEFAULT: '#1C9D4B',
+          bg: '#E9F8EF',
+        },
+        down: {
+          DEFAULT: '#D92D20',
+          bg: '#FDEDEC',
+        },
+        warn: {
+          DEFAULT: '#DC6803',
+          bg: '#FFF6E5',
+        },
+        info: {
+          DEFAULT: '#175CD3',
+          bg: '#EFF4FF',
+        },
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        serif: ['Merriweather', 'serif'],
       },
       borderRadius: {
         lg: 'var(--radius)',

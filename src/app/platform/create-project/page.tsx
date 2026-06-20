@@ -25,7 +25,7 @@ import {
 
 export default function CreateProjectWizard() {
   const router = useRouter();
-  const { addProject } = usePlatform();
+  const { createProject } = usePlatform();
   const [step, setStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
 
@@ -146,24 +146,27 @@ export default function CreateProjectWizard() {
     }, 1500);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!projectName || !projectType) return;
     setSubmitting(true);
-    setTimeout(() => {
-      addProject({
+    try {
+      await createProject({
         name: projectName,
-        type: projectType,
-        location: location || 'Verra registered coordinates',
-        details: details || 'Sustainable carbon capture initiative.',
-        expectedCredits,
-        potentialRevenue: revenue,
+        category: projectType as "tree" | "biochar" | "waste" | "solar" | "transit",
+        description: details || "Sustainable carbon capture initiative.",
+        location: location || "Verra registered coordinates",
+        listedVolume: expectedCredits,
+        pricePerUnit: 11.50,
         baselineEmissions: baseline,
         projectEmissions: project,
-        evidenceCount: uploads.length
+        expectedCredits,
       });
-      setSubmitting(false);
       setStep(5); // Success step
-    }, 2000);
+    } catch (error) {
+      console.error("Failed to create project:", error);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (

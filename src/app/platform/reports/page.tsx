@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 
 export default function PlatformReports() {
-  const { stats, wasteRecords, projects } = usePlatform();
+  const { stats, projects, holdings } = usePlatform();
 
   // Mock report files
   const reportFiles = [
