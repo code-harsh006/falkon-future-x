@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { ChevronRight, ArrowLeft, ShoppingCart, CheckCircle2, PhoneCall, Sparkles } from "lucide-react";
 import { GlassCard } from "@/components/ui/glass-card";
@@ -9,8 +9,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export default function Ecommerce() {
-  const [investorMode, setInvestorMode] = useState(false);
-
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-205 relative overflow-hidden">
       
@@ -19,7 +17,7 @@ export default function Ecommerce() {
       <div className="absolute top-0 right-1/4 w-[400px] h-[400px] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none z-0" />
 
       {/* Navigation */}
-      <Navbar investorMode={investorMode} setInvestorMode={setInvestorMode} />
+      <Navbar />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-36 pb-20 relative z-10 text-left">
         
