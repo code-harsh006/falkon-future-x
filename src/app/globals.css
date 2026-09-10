@@ -4,85 +4,155 @@
 
 @layer base {
   :root {
-    --background: 210 20% 98%;
-    --foreground: 224 71.4% 4.1%;
+    /* Rivet-style paper canvas */
+    --background: 40 14% 95%; /* warm off-white #F2F1EE */
+    --foreground: 0 0% 6%; /* near-black #0F0F0F */
 
-    --card: 0 0% 100%;
-    --card-foreground: 224 71.4% 4.1%;
+    --card: 0 0% 100%; /* pure white panels */
+    --card-foreground: 0 0% 6%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 224 71.4% 4.1%;
+    --popover-foreground: 0 0% 6%;
 
-    --primary: 155 69% 44%; /* brand.500 #1C9D4B */
+    /* Primary = solid black (buttons, active states) */
+    --primary: 0 0% 6%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 221.2 83.2% 53.3%; /* Blue #3b82f6 */
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 6%;
 
-    --accent: 38 92% 50%; /* Orange #f59e0b */
+    /* Single restrained accent, used only for small highlights/links */
+    --accent: 158 64% 34%;
     --accent-foreground: 0 0% 100%;
 
-    --muted: 220 14.3% 95.9%;
-    --muted-foreground: 220 8.9% 46.1%;
+    --muted: 40 10% 92%;
+    --muted-foreground: 0 0% 42%; /* neutral-500/600 */
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 72% 45%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 155 69% 44%; /* brand.500 */
-    --radius: 0.5rem;
+    --border: 30 6% 88%; /* hairline #E7E5E4 */
+    --input: 30 6% 88%;
+    --ring: 0 0% 6%;
+    --radius: 0.625rem;
+
+    /* Dark full-bleed section */
+    --ink: 0 0% 7%; /* #111111 */
+    --ink-foreground: 0 0% 82%;
   }
+}
 
-  .dark {
-    --background: 0 0% 3.9%; /* ink.900 */
-    --foreground: 0 0% 98%;
-
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 155 69% 44%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 221.2 83.2% 53.3%;
-    --secondary-foreground: 0 0% 100%;
-
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-
-    --accent: 38 92% 50%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 155 69% 44%;
+@layer base {
+  * {
+    border-color: hsl(var(--border));
   }
 
   body {
-    @apply antialiased font-sans;
+    @apply antialiased;
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
-    line-height: 1.55;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
   }
 
   ::selection {
-    background: hsl(var(--primary) / 0.22);
-    color: hsl(var(--foreground));
+    background: hsl(var(--foreground));
+    color: hsl(var(--background));
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Poppins', system-ui, sans-serif;
-    letter-spacing: -0.025em;
+    font-family: var(--font-inter), 'Inter', system-ui, sans-serif;
+    letter-spacing: -0.02em;
+    font-weight: 600;
   }
 
   button, a, select, [role='button'] {
     cursor: pointer;
+  }
+}
+
+@layer components {
+  /* Centered Rivet container */
+  .container-rivet {
+    @apply max-w-[1280px] mx-auto px-6 lg:px-8;
+  }
+
+  /* Generous vertical rhythm */
+  .section-py {
+    @apply py-16 md:py-28;
+  }
+
+  /* Eyebrow label */
+  .eyebrow {
+    @apply text-xs font-medium uppercase tracking-[0.18em] text-neutral-500;
+  }
+
+  /* Display headline scale */
+  .display {
+    @apply text-4xl sm:text-5xl lg:text-[3.5rem] font-semibold tracking-tight leading-[1.05] text-neutral-900 text-balance;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl font-semibold tracking-tight leading-[1.1] text-neutral-900 text-balance;
+  }
+
+  .lead {
+    @apply text-base md:text-lg text-neutral-600 leading-relaxed text-pretty;
+  }
+
+  /* Bordered white panel */
+  .panel {
+    @apply bg-white border border-[hsl(var(--border))] rounded-xl;
+  }
+
+  /* Mono technical pill */
+  .mono-pill {
+    @apply inline-flex items-center font-mono text-xs bg-neutral-100 border border-[hsl(var(--border))] rounded-md px-2 py-1 text-neutral-600;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 h-11 px-5 rounded-lg bg-neutral-900 text-white text-sm font-medium transition-colors hover:bg-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--background))];
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 h-11 px-5 rounded-lg bg-white border border-[hsl(var(--border))] text-neutral-900 text-sm font-medium transition-colors hover:bg-neutral-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--background))];
+  }
+
+  .link-underline {
+    @apply text-neutral-900 underline underline-offset-4 decoration-neutral-300 hover:decoration-neutral-900 transition-colors;
+  }
+
+  .field {
+    @apply w-full h-11 px-3.5 bg-white border border-[hsl(var(--border))] rounded-lg text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-900 focus:ring-1 focus:ring-neutral-900 transition-colors;
+  }
+
+  .field-label {
+    @apply block text-xs font-medium text-neutral-700 mb-1.5;
+  }
+
+  /* Backward-compat helpers used by /services detail pages, mapped to the
+     Rivet palette so those secondary pages stay consistent. */
+  .section-subtitle {
+    @apply text-base md:text-lg text-neutral-600 max-w-3xl leading-relaxed;
+  }
+
+  .btn-premium-primary {
+    @apply inline-flex items-center justify-center gap-2 h-10 px-5 rounded-lg bg-neutral-900 text-white text-sm font-medium transition-colors hover:bg-neutral-800;
+  }
+
+  .premium-input {
+    @apply w-full px-3.5 py-2.5 bg-white border border-[hsl(var(--border))] rounded-lg text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-900 focus:ring-1 focus:ring-neutral-900 transition-colors;
+  }
+
+  .grid-bg-overlay {
+    background-image:
+      linear-gradient(to right, rgba(15, 15, 15, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(15, 15, 15, 0.03) 1px, transparent 1px);
+    background-size: 28px 28px;
+    -webkit-mask-image: radial-gradient(ellipse 60% 50% at 50% 0%, #000 70%, transparent 100%);
+    mask-image: radial-gradient(ellipse 60% 50% at 50% 0%, #000 70%, transparent 100%);
   }
 }
 
@@ -91,118 +161,40 @@
     font-variant-numeric: tabular-nums;
   }
 
-  .compact-row {
-    @apply py-2 px-3;
-  }
-
-  .dense-row {
-    @apply py-3 px-4;
-  }
-}
-
-@layer components {
-  /* Premium Mesh Grid Background */
-  .grid-bg-overlay {
-    background-image: 
-      linear-gradient(to right, rgba(99, 102, 241, 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(99, 102, 241, 0.05) 1px, transparent 1px);
-    background-size: 24px 24px;
-    mask-image: radial-gradient(ellipse 60% 50% at 50% 0%, #000 70%, transparent 100%);
-  }
-
-  .radial-glow {
-    position: absolute;
-    border-radius: 9999px;
-    filter: blur(120px);
-    opacity: 0.15;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* Glassmorphism Redefined (Stripe / Linear Quality) */
-  .glass-navbar {
-    @apply bg-white/70 dark:bg-slate-950/70 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/50 shadow-sm transition-all duration-300;
-  }
-
-  .glass-card-premium {
-    @apply bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/70 dark:border-slate-800/70 rounded-2xl shadow-sm hover:shadow-lg hover:border-emerald-500/25 transition-all duration-300 relative overflow-hidden;
-  }
-
-  .glass-card-premium::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.05));
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-  }
-
-  .glass-hover-effect {
-    @apply hover:border-emerald-500/30 dark:hover:border-emerald-500/20 hover:bg-white/95 dark:hover:bg-slate-900/95 hover:-translate-y-0.5 transition-all duration-300;
-  }
-
-  /* Navigation Link styles */
-  .nav-link {
-    @apply text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium text-sm transition-all duration-200 relative py-1.5 px-3 rounded-lg hover:bg-slate-100/65 dark:hover:bg-slate-800/50;
-  }
-
-  .nav-link-active {
-    @apply text-emerald-600 dark:text-emerald-400 bg-emerald-50/80 dark:bg-emerald-950/30 font-semibold;
-  }
-
-  /* Premium Buttons */
-  .btn-premium-primary {
-    @apply relative inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm rounded-xl shadow-md hover:shadow-lg shadow-emerald-600/10 hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-emerald-500/50;
-  }
-
-  .btn-premium-secondary {
-    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 font-semibold text-sm rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/80 hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-slate-500/50;
-  }
-
-  /* Form Elements */
-  .premium-input {
-    @apply w-full px-4 py-3 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all duration-200 placeholder:text-slate-400;
-  }
-
-  .premium-label {
-    @apply block text-slate-700 dark:text-slate-300 font-medium text-xs mb-1.5 uppercase tracking-wider;
-  }
-
-  /* Section Styles */
-  .section-py {
-    @apply py-28;
-  }
-
-  .section-title {
-    @apply text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-none;
-  }
-
-  .section-subtitle {
-    @apply text-lg md:text-xl text-slate-500 dark:text-slate-400 max-w-3xl leading-relaxed;
-  }
-
-  /* Custom Scrollbar */
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-  ::-webkit-scrollbar-track {
-    @apply bg-slate-50 dark:bg-slate-950;
-  }
-  ::-webkit-scrollbar-thumb {
-    @apply bg-slate-200 dark:bg-slate-800 rounded-full hover:bg-slate-300 dark:hover:bg-slate-700;
+  /* Subtle scroll-in animation */
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    animation: revealUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
 }
 
-/* Animations */
-@keyframes pulseGlow {
-  0%, 100% { opacity: 0.15; transform: scale(1); }
-  50% { opacity: 0.25; transform: scale(1.1); }
+@keyframes revealUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.animate-pulse-glow {
-  animation: pulseGlow 10s ease-in-out infinite;
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Minimal scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #c9c7c2;
 }
